@@ -37,7 +37,7 @@ if arg[1]==nil or arg[2]==nil then
   return
 end
 
-local fi = require"full_indiction"
+local fi = require"fullindiction"
 local out1 = assert(io.open(arg[1] ,"w"))
 local out2 = assert(io.open(arg[2] ,"w"))
 local DAY_PROPERTIES = {}
@@ -52,7 +52,7 @@ do
 #include <initializer_list>
 #include <vector>
 
-namespace full_indiction {
+namespace fullindiction {
 
 constexpr auto INDICTION_LENGTH = 532 ;
 
@@ -100,17 +100,17 @@ enum class DayProperty {]]
     out1:write('constexpr auto ', k, ' = ', temp_table[v.desc], ' ; ///< ', v.desc, '\n')
   end
   local h2 = [[
-MonthDay easter_date(const int year_number_in_full_indiction) ;
-MonthDay find_date(const int year_number_in_full_indiction, const DayProperty property) ;
-int apostol_fast_length(const int year_number_in_full_indiction) ;
-bool is_date_of(const int year_number_in_full_indiction, const MonthDay date, const DayProperty property) ;
-std::vector<MonthDay> find_all_dates(const int year_number_in_full_indiction, const DayProperty property) ;
-std::vector<MonthDay> find_all_dates(const int year_number_in_full_indiction,
+MonthDay easter_date(const int year_number_in_fullindiction) ;
+MonthDay find_date(const int year_number_in_fullindiction, const DayProperty property) ;
+int apostol_fast_length(const int year_number_in_fullindiction) ;
+bool is_date_of(const int year_number_in_fullindiction, const MonthDay date, const DayProperty property) ;
+std::vector<MonthDay> find_all_dates(const int year_number_in_fullindiction, const DayProperty property) ;
+std::vector<MonthDay> find_all_dates(const int year_number_in_fullindiction,
                                      std::initializer_list<DayProperty> properties) ;
-//std::vector<DayProperty> get_day_properties(const int year_number_in_full_indiction, const MonthDay date) ;
-//int get_n50(const int year_number_in_full_indiction, const MonthDay date) ;
+//std::vector<DayProperty> get_day_properties(const int year_number_in_fullindiction, const MonthDay date) ;
+//int get_n50(const int year_number_in_fullindiction, const MonthDay date) ;
 
-} // namespace full_indiction]]
+} // namespace fullindiction]]
   out1:write('\n', h2, '\n')
   assert(out1:close())
 end
@@ -130,12 +130,12 @@ do
 
 namespace {
 
-using namespace full_indiction ;
+using namespace fullindiction ;
 
-constexpr void check_year_number(const int year_number_in_full_indiction)
+constexpr void check_year_number(const int year_number_in_fullindiction)
 {
-  if (year_number_in_full_indiction < 1 || year_number_in_full_indiction > INDICTION_LENGTH)
-    throw std::runtime_error("full_indiction: value of 'year_number_in_full_indiction' must be in range [1,533)");
+  if (year_number_in_fullindiction < 1 || year_number_in_fullindiction > INDICTION_LENGTH)
+    throw std::runtime_error("fullindiction: value of 'year_number_in_fullindiction' must be in range [1,533)");
 }
 
 constexpr void check_property_number(DayProperty p)
@@ -143,7 +143,7 @@ constexpr void check_property_number(DayProperty p)
   auto pnum = static_cast<int>(p);
   auto max = static_cast<int>(DayProperty::SIZE_) - 1;
   if (pnum < 0 || pnum > max)
-    throw std::runtime_error("full_indiction: invalid DayProperty value");
+    throw std::runtime_error("fullindiction: invalid DayProperty value");
 }
 
 constexpr bool is_leap(const int year_number_in_great_indiction)
@@ -179,13 +179,13 @@ constexpr int month_length(const int month, const bool leap)
   }
 }
 
-constexpr void check_date(const int year_number_in_full_indiction, const MonthDay date)
+constexpr void check_date(const int year_number_in_fullindiction, const MonthDay date)
 {
-  check_year_number(year_number_in_full_indiction);
+  check_year_number(year_number_in_fullindiction);
   if (date.first < 1 || date.first > 12)
-    throw std::runtime_error("full_indiction: invalid month number");
-  if (date.second < 1 || date.second > month_length(date.first, is_leap(year_number_in_full_indiction)))
-    throw std::runtime_error("full_indiction: invalid day number");
+    throw std::runtime_error("fullindiction: invalid month number");
+  if (date.second < 1 || date.second > month_length(date.first, is_leap(year_number_in_fullindiction)))
+    throw std::runtime_error("fullindiction: invalid day number");
 }]]
   out2:write(c1, '\n\n')
   local to_octets = function (x, length)
@@ -269,7 +269,7 @@ public:
 
 } // namespace without name
 
-namespace full_indiction {
+namespace fullindiction {
 
 std::vector<MonthDay> find_all_dates(const int y, const DayProperty p)
 {
@@ -319,7 +319,7 @@ int apostol_fast_length(const int y)
   return x2 - x1 - 57 ;
 }
 
-} // namespace full_indiction
+} // namespace fullindiction
 ]]
   out2:write(c2, '\n\n')
   assert(out2:close())

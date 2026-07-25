@@ -11,6 +11,10 @@ cmake_dependent_option(FULLINDICTION_INSTALL
   "Enable installation rules" ON
   "PROJECT_IS_TOP_LEVEL" OFF)
 
+if(FULLINDICTION_BUILD_TESTS)
+  enable_testing()
+endif()
+
 # try to find lua interpreter in system
 function(check_lua_version result luafile)
   execute_process(
@@ -63,18 +67,19 @@ add_custom_command(
          "${CMAKE_CURRENT_SOURCE_DIR}/src/fullindiction.cpp"
   COMMAND ${LUA_EXECUTABLE} generate_cpp.lua fullindiction.h fullindiction.cpp
   DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/generate_cpp.lua"
+          "${CMAKE_CURRENT_SOURCE_DIR}/src/fullindiction.lua"
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src"
   VERBATIM
 )
-add_library(${PROJECT_NAME}
+add_library(fullindiction
   "${CMAKE_CURRENT_SOURCE_DIR}/src/fullindiction.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/fullindiction.cpp"
 )
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
-target_include_directories(${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
+target_compile_features(fullindiction PRIVATE cxx_std_23)
+target_include_directories(fullindiction PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
 
 if(FULLINDICTION_BUILD_TESTS)
-#  add_subdirectory(tests)
+  add_subdirectory(tests)
 endif()
 
 if(FULLINDICTION_INSTALL)
