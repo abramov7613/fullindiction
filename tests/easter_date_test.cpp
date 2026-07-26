@@ -10,7 +10,7 @@ TEST_CASE("test function 'easter_date'"){
   };
   auto initializer = [](std::string_view datafilename)->std::vector<DATA>{
     std::vector<DATA> result;
-    std::ifstream istrm(datafilename);
+    std::ifstream istrm(datafilename.data());
     if (!istrm.is_open()) throw std::runtime_error("can't open "+std::string(datafilename));
     auto lineN = 1u;
     for (std::string line; std::getline(istrm, line); ++lineN) {
@@ -23,7 +23,7 @@ TEST_CASE("test function 'easter_date'"){
                                   +std::string(datafilename)
                                   +"'\nline: "
                                   +std::to_string(lineN) );
-      result.emplace_back(p, {m, d});
+      result.emplace_back(p, std::make_pair(m, d));
     }
     istrm.close();
     return result;
