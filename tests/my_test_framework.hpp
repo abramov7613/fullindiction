@@ -6,6 +6,8 @@
 #include "fullindiction.h"
 #include <string>
 #include <vector>
+#include <fstream>
+#include <stdexcept>
 #include <functional>
 
 namespace fi = fullindiction;
@@ -30,10 +32,20 @@ namespace Catch {
 }
 
 template<class Data> class FUNCTION_TESTER {
-  std::vector<Data> md;
+  std::vector<Data> data_;
 public:
-  FUNCTION_TESTER(std::string_view datafile, std::function<decltype(md)(std::string_view)> initializer)
-    : md(initializer(datafile)) {}
-  auto begin() const { return md.cbegin(); }
-  auto end() const { return md.cend(); }
+  FUNCTION_TESTER(std::string_view datafile, std::function<Data(const std::string&, size_t)> datafile_string_parser)
+  {
+    std::ifstream istrm(datafile.data());
+    if (!istrm.is_open()) throw std::runtime_error("can't open "+std::string(datafile));
+    auto lineN = 1u;
+    for (std::string line; std::getline(istrm, line); ++lineN) {
+      while (line.starts_with(' ') || line.starts_with('\t')) line.erase(0,1) ;
+      if (line.empty() || line.starts_with('#')) continue ;
+      data_.push_back( datafile_string_parser(line, lineN) );
+    }
+    istrm.close();
+  }
+  auto begin() const { return data_.cbegin(); }
+  auto end() const { return data_.cend(); }
 };

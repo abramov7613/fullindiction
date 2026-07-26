@@ -1,34 +1,24 @@
 #include "my_test_framework.hpp"
-#include <fstream>
 #include <sstream>
-#include <stdexcept>
 
 TEST_CASE("test function 'easter_date'"){
   struct DATA {
     int param;
     MD result;
   };
-  auto initializer = [](std::string_view datafilename)->std::vector<DATA>{
-    std::vector<DATA> result;
-    std::ifstream istrm(datafilename.data());
-    if (!istrm.is_open()) throw std::runtime_error("can't open "+std::string(datafilename));
-    auto lineN = 1u;
-    for (std::string line; std::getline(istrm, line); ++lineN) {
-      while (line.starts_with(' ') || line.starts_with('\t')) line.erase(0,1) ;
-      if (line.empty() || line.starts_with('#')) continue ;
-      std::istringstream iss(line);
-      int p{}, m{}, d{};
-      if (!(iss >> p) || !(iss >> m) || !(iss >> d))
-        throw std::runtime_error( "invalid format of test data file: '"
-                                  +std::string(datafilename)
-                                  +"'\nline: "
-                                  +std::to_string(lineN) );
-      result.emplace_back(p, std::make_pair(m, d));
-    }
-    istrm.close();
-    return result;
-  };
-  auto tester = FUNCTION_TESTER<DATA>("easter_date_test.txt", initializer);
-  for (const auto& [param, result]: tester)
+  constexpr std::string_view datafile = "easter_date_test.txt";
+  auto tester = FUNCTION_TESTER<DATA>(datafile, [datafile](const std::string& line, size_t lineN){
+    std::istringstream iss(line);
+    int p{}, m{}, d{};
+    if (!(iss >> p) || !(iss >> m) || !(iss >> d))
+      throw std::runtime_error( "invalid format of test data file: '"
+                                +std::string(datafile)
+                                +"'\nline: "
+                                +std::to_string(lineN) );
+    return DATA{p, std::make_pair(m, d)};
+  });
+  for (const auto [param, result]: tester) {
+    INFO("param = " << param);
     REQUIRE( fi::easter_date(param) == result );
+  }
 }
