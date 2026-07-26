@@ -127,6 +127,7 @@ do
 #include <cstdint>
 #include <string>
 #include <algorithm>
+#include <iterator>
 
 namespace {
 

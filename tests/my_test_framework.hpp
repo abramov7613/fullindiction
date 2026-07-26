@@ -4,6 +4,9 @@
 
 #include "catch_amalgamated.hpp"
 #include "fullindiction.h"
+#include <string>
+#include <vector>
+#include <functional>
 
 namespace fi = fullindiction;
 using fi::INDICTION_LENGTH;
@@ -25,3 +28,12 @@ namespace Catch {
         }
     };
 }
+
+template<class Data> class FUNCTION_TESTER {
+  std::vector<Data> md;
+public:
+  FUNCTION_TESTER(std::string_view datafile, std::function<decltype(md)(std::string_view)> initializer)
+    : md(initializer(datafile)) {}
+  auto begin() const { return md.cbegin(); }
+  auto end() const { return md.cend(); }
+};
