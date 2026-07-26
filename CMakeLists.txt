@@ -11,10 +11,6 @@ cmake_dependent_option(FULLINDICTION_INSTALL
   "Enable installation rules" ON
   "PROJECT_IS_TOP_LEVEL" OFF)
 
-if(FULLINDICTION_BUILD_TESTS)
-  enable_testing()
-endif()
-
 # try to find lua interpreter in system
 function(check_lua_version result luafile)
   execute_process(
@@ -79,6 +75,7 @@ target_compile_features(fullindiction PRIVATE cxx_std_23)
 target_include_directories(fullindiction PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
 
 if(FULLINDICTION_BUILD_TESTS)
+  enable_testing()
   add_subdirectory(tests)
 endif()
 

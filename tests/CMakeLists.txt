@@ -1,4 +1,4 @@
-add_library(catch2 SHARED
+add_library(catch2
   "${CMAKE_CURRENT_LIST_DIR}/catch_amalgamated.cpp"
   "${CMAKE_CURRENT_LIST_DIR}/catch_amalgamated.hpp"
 )
