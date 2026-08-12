@@ -1,7 +1,12 @@
 #include "my_test_framework.hpp"
 #include <sstream>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 TEST_CASE("test function 'find_date'"){
+
+  std::string datafile = fs::path(fs::path(TEST_ROOT_DIR) / __FILE__).lexically_normal().replace_extension("txt").string();
 
   SECTION( "test for input parameters" ){
     REQUIRE_THROWS( fi::find_date(-1, fi::PASHA) );
@@ -19,12 +24,12 @@ TEST_CASE("test function 'find_date'"){
       int param2;
       MD result;
     };
-    auto results = TEST_FUNCTION_RESULTS_CONTAINER<DATA>(datafile, [](const std::string& line, size_t lineN){
+    auto results = TEST_FUNCTION_RESULTS_CONTAINER<DATA>(datafile, [&](const std::string& line, size_t lineN){
       std::istringstream iss(line);
       int p1{}, p2{}, m{}, d{};
       if (!(iss >> p1) || !(iss >> p2) || !(iss >> m) || !(iss >> d))
         throw std::runtime_error( "invalid format of test data file: '"
-                                  +std::string(datafile)
+                                  +datafile
                                   +"'\nline: "
                                   +std::to_string(lineN) );
       return DATA{p1, p2, std::make_pair(m, d)};
