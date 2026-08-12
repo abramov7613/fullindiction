@@ -1,8 +1,6 @@
 #include "my_test_framework.hpp"
 #include <sstream>
 
-constexpr std::string_view datafile = "easter_date_test.txt";
-
 TEST_CASE( "test function 'easter_date'" ){
 
   SECTION( "test for input parameters" ){

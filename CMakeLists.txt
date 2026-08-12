@@ -2,14 +2,9 @@ cmake_minimum_required(VERSION 3.31)
 
 project(fullindiction VERSION 1.0.1)
 
-include(CMakeDependentOption)
-
-cmake_dependent_option(FULLINDICTION_BUILD_TESTS
-  "Build fullindiction tests" ON
-  "PROJECT_IS_TOP_LEVEL" OFF)
-cmake_dependent_option(FULLINDICTION_INSTALL
-  "Enable installation rules" ON
-  "PROJECT_IS_TOP_LEVEL" OFF)
+option(FULLINDICTION_BUILD_TESTS "Build fullindiction tests" ${PROJECT_IS_TOP_LEVEL})
+option(FULLINDICTION_INSTALL "Enable installation rules" ${PROJECT_IS_TOP_LEVEL})
+option(FULLINDICTION_OFFLINEBUILD "Don't download dependencies from internet" ON)
 
 # try to find lua interpreter in system
 function(check_lua_version result luafile)
@@ -37,6 +32,9 @@ find_program(LUA_EXECUTABLE
 
 # if lua interpreter notfound, try to download & build
 if(NOT LUA_EXECUTABLE)
+  if(FULLINDICTION_OFFLINEBUILD)
+    message(FATAL_ERROR "lua interpreter not found in system, try to unset 'FULLINDICTION_OFFLINEBUILD' option")
+  endif()
   file(DOWNLOAD "https://www.lua.org/ftp/lua-5.5.0.tar.gz"
     "${CMAKE_CURRENT_BINARY_DIR}/lua-5.5.0.tar.gz"
     EXPECTED_HASH SHA256=57ccc32bbbd005cab75bcc52444052535af691789dba2b9016d5c50640d68b3d
@@ -65,6 +63,7 @@ add_custom_command(
   DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/generate_cpp.lua"
           "${CMAKE_CURRENT_SOURCE_DIR}/src/fullindiction.lua"
   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src"
+  DEPENDS_EXPLICIT_ONLY
   VERBATIM
 )
 add_library(fullindiction

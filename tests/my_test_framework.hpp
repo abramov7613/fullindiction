@@ -9,11 +9,15 @@
 #include <fstream>
 #include <stdexcept>
 #include <functional>
+#include <filesystem>
 
+namespace fs = std::filesystem;
 namespace fi = fullindiction;
 using fi::INDICTION_LENGTH;
 using fi::DayProperty;
 using MD = fi::MonthDay ;
+
+std::string datafile = fs::path(fs::path(TEST_ROOT_DIR) / __FILE__).lexically_normal().replace_extension("txt").string();
 
 namespace Catch {
     template<>

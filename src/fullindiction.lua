@@ -25,6 +25,7 @@
 ]]
 
 local INDICTION_LENGTH = 532
+local INDICTION_OFFSET = 1940
 
 --#######################################################################--
 --##################         FUNCTIONS        ###########################--
@@ -42,7 +43,7 @@ end
 
 local function leap(y)
   if not check_y(y) then error"leap error" end
-  return (y+1940)%4 == 0
+  return (y+INDICTION_OFFSET)%4 == 0
 end
 
 local function m_size(m, leap)
@@ -67,7 +68,7 @@ end
 
 local function easter(year)
   if not check_y(year) then error"easter function error" end
-  year = year + 1940
+  year = year + INDICTION_OFFSET
   local  m = 3
   local  a = year % 19
   local  b = year % 4
@@ -159,7 +160,7 @@ function Date:wd() -- return current weekday as 0=sun, 1=mon ...
     local r = math.modf((a - x) / b)
     return r
   end
-  local Y = self.year + 1940
+  local Y = self.year + INDICTION_OFFSET
   local c0 = fdiv((self.month - 3) , 12)
   local j1 = fdiv(1461 * (Y + c0), 4)
   local j2 = fdiv(153 * self.month - 1836 * c0 - 457, 5)

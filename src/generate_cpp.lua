@@ -136,7 +136,7 @@ using namespace fullindiction ;
 constexpr void check_year_number(const int year_number_in_fullindiction)
 {
   if (year_number_in_fullindiction < 1 || year_number_in_fullindiction > INDICTION_LENGTH)
-    throw std::runtime_error("fullindiction: value of 'year_number_in_fullindiction' must be in range [1,533)");
+    throw std::runtime_error("fullindiction: value of 'year_number_in_fullindiction' must be in range [1,532]");
 }
 
 constexpr void check_property_number(DayProperty p)
