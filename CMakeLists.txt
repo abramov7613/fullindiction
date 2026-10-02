@@ -66,11 +66,11 @@ add_custom_command(
   DEPENDS_EXPLICIT_ONLY
   VERBATIM
 )
-add_library(fullindiction
+add_library(fullindiction STATIC
   "${CMAKE_CURRENT_SOURCE_DIR}/src/fullindiction.h"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/fullindiction.cpp"
 )
-target_compile_features(fullindiction PRIVATE cxx_std_23)
+target_compile_features(fullindiction PRIVATE cxx_std_20)
 target_include_directories(fullindiction PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
 
 if(FULLINDICTION_BUILD_TESTS)
