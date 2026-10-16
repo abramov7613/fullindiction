@@ -306,7 +306,7 @@ public:
       oct_str[#oct_str + 1] = to_octets(day)           -- 1 byte for day
       oct_str[#oct_str + 1] = to_octets(#val)          -- 1 byte for properties count
       for i,v in ipairs(val) do
-        oct_str[#oct_str + 1] = to_octets(v, 2)        -- 2 bytes for property as integer
+        oct_str[#oct_str + 1] = to_octets(v-1, 2)        -- 2 bytes for property as integer
       end
       oct_str[#oct_str + 1] = '"\n'
     end
