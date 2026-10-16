@@ -43,31 +43,32 @@ local fi = require"fullindiction"
 local h_file   = assert(io.open(arg[1] ,"w"))
 local cpp_file = assert(io.open(arg[2] ,"w"))
 local DAY_PROPERTIES = {}
+local iterator_by_firstkeys_of_days_table = function()
+  local a = {}
+  for n in pairs(fi.days) do a[#a + 1] = n end
+  table.sort(a, function(x, y) return fi.days[x].index < fi.days[y].index end)
+  local i = 0
+  return function()
+    i = i + 1
+    if i==1 then return a[i], fi.days[a[i]] end
+    if not a[i] then return nil,nil end
+    while fi.days[a[i]].desc==fi.days[a[i-1]].desc do i = i + 1 end
+    return a[i], fi.days[a[i]]
+  end
+end
 
 --##################################################################
 --####################  Generate header file  ######################
 --##################################################################
 do
   h_file:write('/*\n', License, '*/\n')
-  local iterator_by_firstkeys_of_days_table = function()
-    local a = {}
-    for n in pairs(fi.days) do a[#a + 1] = n end
-    table.sort(a, function(x, y) return fi.days[x].index < fi.days[y].index end)
-    local i = 0
-    return function()
-      i = i + 1
-      if i==1 then return a[i], fi.days[a[i]] end
-      if not a[i] then return nil,nil end
-      while fi.days[a[i]].desc==fi.days[a[i-1]].desc do i = i + 1 end
-      return a[i], fi.days[a[i]]
-    end
-  end
   local temp_table = {}
   h_file:write([[
 #pragma once
 #include <utility>
 #include <initializer_list>
 #include <vector>
+#include <string>
 
 namespace fullindiction {
 
@@ -106,13 +107,18 @@ enum class DayProperty {
 // функции
 MonthDay easter_date(int year_number_in_fullindiction) ;
 MonthDay find_date(int year_number_in_fullindiction, DayProperty property) ;
-int apostol_fast_length(int year_number_in_fullindiction) ;
 bool is_date_of(int year_number_in_fullindiction, MonthDay date, DayProperty property) ;
 std::vector<MonthDay> find_all_dates(int year_number_in_fullindiction, DayProperty property) ;
 std::vector<MonthDay> find_all_dates(int year_number_in_fullindiction,
                                      std::initializer_list<DayProperty> properties) ;
 std::vector<DayProperty> find_properties(int year_number_in_fullindiction, MonthDay date) ;
 std::vector<DayProperty> find_properties(int year_number_in_fullindiction, int month, int day) ;
+std::vector<DayProperty> find_properties(int year_number_in_fullindiction,
+                                         std::vector<MonthDay> dates) ;
+int apostol_fast_length(int year_number_in_fullindiction) ;
+std::string description(DayProperty) ; // in utf8
+std::string description(std::vector<DayProperty>) ; // in utf8
+int to_year_number_in_fullindiction(int year) ;
 
 } // namespace fullindiction
 ]])
@@ -132,6 +138,7 @@ do
 #include <string>
 #include <algorithm>
 #include <iterator>
+#include <unordered_map>
 
 namespace {
 
@@ -405,16 +412,53 @@ int apostol_fast_length(int y)
   return x2 - x1 - 57 ;
 }
 
-std::vector<DayProperty> find_properties(int y, MonthDay d)
+std::vector<DayProperty> find_properties(int y, MonthDay md)
 {
   static const ARRAY_OF_PROPERTIES_BY_YMD array_of_properties_by_ymd {};
-  check_date(y, d);
-  return array_of_properties_by_ymd.get(y, d.first, d.second);
+  check_date(y, md);
+  return array_of_properties_by_ymd.get(y, md.first, md.second);
 }
 
 std::vector<DayProperty> find_properties(int y, int m, int d)
 {
   return find_properties(y, {m, d});
+}
+
+std::vector<DayProperty> find_properties(int y, std::vector<MonthDay> dates)
+{
+  std::vector<DayProperty> result;
+  for (auto md: dates) {
+    auto v = find_properties(y, md);
+    std::move(v.begin(), v.end(), std::back_inserter(result));
+  }
+  return result;
+}
+
+int to_year_number_in_fullindiction(int year)
+{
+  return ((year - 1941) % 532 + 532) % 532 + 1;
+}
+
+std::string description(DayProperty p)
+{
+  check_property_number(p) ;
+  using namespace std::literals;
+  static const std::unordered_map<DayProperty, std::string_view> data = {
+]])
+  for k,v in iterator_by_firstkeys_of_days_table() do
+    cpp_file:write('    { ', k, ', "', v.desc, '"sv },\n')
+  end
+  cpp_file:write([[
+  };
+  if (auto x = data.find(p); x != data.end()) return std::string(x->second) ;
+  return {};
+}
+
+std::string description(std::vector<DayProperty> p)
+{
+  std::string result;
+  for (auto x: p) { result += description(x) + ". "; }
+  return result;
 }
 
 } // namespace fullindiction

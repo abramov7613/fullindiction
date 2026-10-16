@@ -1130,7 +1130,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "Чтения субботы по Рождестве Христовом",
+  desc = "Чтения субботы по Рождестве Христовом",-- когда не выпадает на субботу
   keys = { 'SAT_AFTER_CHRISTMAS_READINGS' },
   calc = function(year)
     local result = Date:new(year,12,25)
@@ -1164,7 +1164,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "Чтения недели по Рождестве Христовом",
+  desc = "Чтения недели по Рождестве Христовом",-- когда не выпадает на воскресенье
   keys = { 'SUN_AFTER_CHRISTMAS_READINGS' },
   calc = function(year)
     local result = Date:new(year,12,25)
@@ -1229,7 +1229,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "Чтения недели пред Богоявлением",
+  desc = "Чтения недели пред Богоявлением",-- когда не выпадает на воскресенье
   keys = { 'SUN_BEFORE_BAPTISM_READINGS', 'SUN_BEFORE_THEOPHANY_READINGS' },
   calc = function(year)
     local result = Date:new(year, 1, 1)
@@ -1445,7 +1445,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "Двунадесятые переходящие праздники",
+  desc = "Двунадесятый переходящий праздник",
   keys = { 'MOVEABLE_FEAST', 'MOVE_FEAST' },
   calc = function(year)
     local palm_sun = GET_DATEOBJ(year, 'PALM_SUN')
@@ -1462,7 +1462,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "Двунадесятые непереходящие праздники",
+  desc = "Двунадесятый непереходящий праздник",
   keys = { 'IMMOVEABLE_FEAST', 'IMMOVE_FEAST' },
   calc = function(year)
     local god_meeting = GET_DATEOBJ(year, 'GOD_MEETING')
@@ -1483,7 +1483,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "Великие праздники",
+  desc = "Великий праздник",
   keys = { 'GREAT_FEAST' },
   calc = function(year)
     local result =
@@ -1499,7 +1499,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "один из дней великого поста",
+  desc = "Великий пост",
   keys = { 'GREAT_LENT' },
   calc = function(year)
     local result = {}
@@ -1519,7 +1519,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "один из дней Петрова поста",
+  desc = "Петров пост",
   keys = { 'APOSTOL_LENT' },
   calc = function(year)
     local result = {}
@@ -1539,7 +1539,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "один из дней Рождественского поста",
+  desc = "Рождественский пост",
   keys = { 'CHRISTMAS_LENT' },
   calc = function(year)
     local result = {}
@@ -1559,7 +1559,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "один из дней Успенского поста",
+  desc = "Успенский пост",
   keys = { 'ASSUMPTION_LENT' },
   calc = function(year)
     local result = {}
@@ -1579,7 +1579,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "один из дней сплошной седмицы. Светлая",
+  desc = "Сплошная седмица - Светлая",
   keys = { 'SOLID_WEEK_BRIGHT' },
   calc = function(year)
     local result = {}
@@ -1599,7 +1599,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "один из дней сплошной седмицы. Рождественская",
+  desc = "Сплошная седмица - Святки",
   keys = { 'SOLID_WEEK_CHRISTMAS' },
   calc = function(year)
     local result = {}
@@ -1624,7 +1624,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "один из дней сплошной седмицы. Троицкая",
+  desc = "Сплошная седмица - Троицкая",
   keys = { 'SOLID_WEEK_PENTECOST' },
   calc = function(year)
     local result = {}
@@ -1644,7 +1644,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "один из дней сплошной седмицы. Сырная (Масленица)",
+  desc = "Сплошная седмица - Сырная (Масленица)",
   keys = { 'SOLID_WEEK_CHEESE' },
   calc = function(year)
     local result = {}
@@ -1664,7 +1664,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "один из дней сплошной седмицы. Мытаря и фарисея",
+  desc = "Сплошная седмица - Мытаря и фарисея",
   keys = { 'SOLID_WEEK_PUBLICAN_PHARISEE' },
   calc = function(year)
     local result = {}
@@ -1684,7 +1684,7 @@ CREATE_DAYS_ENTRY {
 }
 
 --#######################################################################--
---#################   RETURN MODULE TABLE    ############################--
+--##############   return table for user API   ##########################--
 --#######################################################################--
 
 return {
