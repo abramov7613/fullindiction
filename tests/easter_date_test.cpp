@@ -6,7 +6,10 @@ namespace fs = std::filesystem;
 
 TEST_CASE( "test function 'easter_date'" ){
 
-  std::string datafile = fs::path(fs::path(TEST_ROOT_DIR) / __FILE__).lexically_normal().replace_extension("txt").string();
+  std::string datafile = fs::path(fs::path(TEST_ROOT_DIR) / __FILE__)
+                              .lexically_normal()
+                              .replace_extension("txt")
+                              .string();
 
   SECTION( "test for input parameters" ){
     REQUIRE_THROWS( fi::easter_date(-1) );
