@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.31)
 
-project(fullindiction VERSION 1.0.1)
+project(fullindiction VERSION 1.0.6)
 
 option(FULLINDICTION_BUILD_TESTS "Build fullindiction tests" ${PROJECT_IS_TOP_LEVEL})
 option(FULLINDICTION_INSTALL "Enable installation rules" ${PROJECT_IS_TOP_LEVEL})
