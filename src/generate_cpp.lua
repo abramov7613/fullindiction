@@ -25,6 +25,8 @@ License = [[
     OTHER DEALINGS IN THE SOFTWARE.
 ]]
 
+-- NOTE: this file contains the source code in 2 programming languages
+
 LUA_MINOR_VERSION = string.match(_VERSION, "Lua 5%.(%d)")
 
 if LUA_MINOR_VERSION==nil or tonumber(LUA_MINOR_VERSION)<4 then
@@ -38,28 +40,15 @@ if arg[1]==nil or arg[2]==nil then
 end
 
 local fi = require"fullindiction"
-local out1 = assert(io.open(arg[1] ,"w"))
-local out2 = assert(io.open(arg[2] ,"w"))
+local h_file   = assert(io.open(arg[1] ,"w"))
+local cpp_file = assert(io.open(arg[2] ,"w"))
 local DAY_PROPERTIES = {}
 
 --##################################################################
 --####################  Generate header file  ######################
 --##################################################################
 do
-  local h1 = [[
-#pragma once
-#include <utility>
-#include <initializer_list>
-#include <vector>
-
-namespace fullindiction {
-
-constexpr auto INDICTION_LENGTH = 532 ;
-
-using MonthDay = std::pair<int,int> ;
-
-enum class DayProperty {]]
-  out1:write('/*\n', License, '*/\n', h1, '\n')
+  h_file:write('/*\n', License, '*/\n')
   local iterator_by_firstkeys_of_days_table = function()
     local a = {}
     for n in pairs(fi.days) do a[#a + 1] = n end
@@ -74,12 +63,26 @@ enum class DayProperty {]]
     end
   end
   local temp_table = {}
+  h_file:write([[
+#pragma once
+#include <utility>
+#include <initializer_list>
+#include <vector>
+
+namespace fullindiction {
+
+constexpr auto INDICTION_LENGTH = 532 ;
+
+using MonthDay = std::pair<int,int> ;
+
+enum class DayProperty {
+]])
   for k,v in iterator_by_firstkeys_of_days_table() do
-    out1:write('  ', k, ',///< ', v.desc, '\n')
+    h_file:write('  ', k, ',///< ', v.desc, '\n')
     temp_table[v.desc] = k
     DAY_PROPERTIES[#DAY_PROPERTIES+1] = k
   end
-  out1:write('  SIZE_\n};\n')
+  h_file:write('  DAY_PROPERTY_SIZE\n};\n')
   local iterator_by_not_firstkeys_of_days_table = function()
     local t = {}
     for n in iterator_by_firstkeys_of_days_table() do t[n] = true end
@@ -94,34 +97,35 @@ enum class DayProperty {]]
       return a[i], fi.days[a[i]]
     end
   end
-  out1:write('using enum DayProperty ;\n')
-  out1:write('// таблица псевдонимов\n')
+  h_file:write('using enum DayProperty ;\n')
+  h_file:write('// таблица псевдонимов\n')
   for k,v in iterator_by_not_firstkeys_of_days_table() do
-    out1:write('constexpr auto ', k, ' = ', temp_table[v.desc], ' ; ///< ', v.desc, '\n')
+    h_file:write('constexpr auto ', k, ' = ', temp_table[v.desc], ' ; ///< ', v.desc, '\n')
   end
-  local h2 = [[
-MonthDay easter_date(const int year_number_in_fullindiction) ;
-MonthDay find_date(const int year_number_in_fullindiction, const DayProperty property) ;
-int apostol_fast_length(const int year_number_in_fullindiction) ;
-bool is_date_of(const int year_number_in_fullindiction, const MonthDay date, const DayProperty property) ;
-std::vector<MonthDay> find_all_dates(const int year_number_in_fullindiction, const DayProperty property) ;
-std::vector<MonthDay> find_all_dates(const int year_number_in_fullindiction,
+  h_file:write('\n', [[
+// функции
+MonthDay easter_date(int year_number_in_fullindiction) ;
+MonthDay find_date(int year_number_in_fullindiction, DayProperty property) ;
+int apostol_fast_length(int year_number_in_fullindiction) ;
+bool is_date_of(int year_number_in_fullindiction, MonthDay date, DayProperty property) ;
+std::vector<MonthDay> find_all_dates(int year_number_in_fullindiction, DayProperty property) ;
+std::vector<MonthDay> find_all_dates(int year_number_in_fullindiction,
                                      std::initializer_list<DayProperty> properties) ;
-//std::vector<DayProperty> get_day_properties(const int year_number_in_fullindiction, const MonthDay date) ;
-//int get_n50(const int year_number_in_fullindiction, const MonthDay date) ;
+std::vector<DayProperty> find_properties(int year_number_in_fullindiction, MonthDay date) ;
+std::vector<DayProperty> find_properties(int year_number_in_fullindiction, int month, int day) ;
 
-} // namespace fullindiction]]
-  out1:write('\n', h2, '\n')
-  assert(out1:close())
+} // namespace fullindiction
+]])
+  assert(h_file:close())
 end
 
 --##################################################################
 --#################   Generate cpp file   ##########################
 --##################################################################
 do
-  out2:write('/*\n', License, '*/\n')
-  out2:write('#include "', arg[1], '"\n')
-  local c1 = [[
+  cpp_file:write('/*\n', License, '*/\n')
+  cpp_file:write('#include "', arg[1], '"\n')
+  cpp_file:write([[
 #include <array>
 #include <stdexcept>
 #include <cstdint>
@@ -142,7 +146,7 @@ constexpr void check_year_number(const int year_number_in_fullindiction)
 constexpr void check_property_number(DayProperty p)
 {
   auto pnum = static_cast<int>(p);
-  auto max = static_cast<int>(DayProperty::SIZE_) - 1;
+  auto max = static_cast<int>(DayProperty::DAY_PROPERTY_SIZE) - 1;
   if (pnum < 0 || pnum > max)
     throw std::runtime_error("fullindiction: invalid DayProperty value");
 }
@@ -187,8 +191,8 @@ constexpr void check_date(const int year_number_in_fullindiction, const MonthDay
     throw std::runtime_error("fullindiction: invalid month number");
   if (date.second < 1 || date.second > month_length(date.first, is_leap(year_number_in_fullindiction)))
     throw std::runtime_error("fullindiction: invalid day number");
-}]]
-  out2:write(c1, '\n\n')
+}
+]])
   local to_octets = function (x, length)
     if math.type(x)~='integer' then error"to_octets function error" end
     length = length or 1
@@ -208,36 +212,36 @@ constexpr void check_date(const int year_number_in_fullindiction, const MonthDay
     end
     return result
   end
-  local adpy = {}
-  local P_COUNT = #DAY_PROPERTIES
-  for p = 1, P_COUNT do -- save all calculations to array of bytes
+  local oct_str = {}
+  for p = 1, #DAY_PROPERTIES do -- save all calculations to bytes sequence
     for y = 1, fi.INDICTION_LENGTH do
-      adpy[#adpy + 1] = '  "'
-      adpy[#adpy + 1] = to_octets(p-1, 2)       -- 2 bytes for DayProperty value as int
-      adpy[#adpy + 1] = to_octets(y, 2)         -- 2 bytes for year number in indiction range
+      oct_str[#oct_str + 1] = '  "'
+      oct_str[#oct_str + 1] = to_octets(p-1, 2)       -- 2 bytes for DayProperty value as int
+      oct_str[#oct_str + 1] = to_octets(y, 2)         -- 2 bytes for year number in indiction range
       local dates = { fi.days[DAY_PROPERTIES[p]].calc(y) }
       if dates[1]==0 then dates = {} end
-      adpy[#adpy + 1] = to_octets(#dates//2)    -- 1 byte for count of dates
+      oct_str[#oct_str + 1] = to_octets(#dates//2)    -- 1 byte for count of dates
       for i=1, #dates, 2 do
-        adpy[#adpy + 1] = to_octets(dates[i])   -- 1 byte for month number of each date
-        adpy[#adpy + 1] = to_octets(dates[i+1]) -- 1 byte for day number of each date
+        oct_str[#oct_str + 1] = to_octets(dates[i])   -- 1 byte for month number of each date
+        oct_str[#oct_str + 1] = to_octets(dates[i+1]) -- 1 byte for day number of each date
       end
-      adpy[#adpy + 1] = '"\n'
+      oct_str[#oct_str + 1] = '"\n'
     end
   end
-  local buf = table.concat(adpy)
-  out2:write('constexpr auto adpy = std::string_view(\n')
-  out2:write(buf, '  , ', select(2, string.gsub(buf, '\\', '\\')), ');\n')
-  buf = nil
-  out2:write('constexpr auto P_COUNT = ', P_COUNT, ' ;\n\n')
-  local c2 = [[
+  cpp_file:write('\n', [[
 class ARRAY_OF_DATES_BY_PROPERTY_AND_YEAR {
+  constexpr static auto data_ = std::string_view(
+]])
+  local buf = table.concat(oct_str)
+  cpp_file:write(buf, '  , ', select(2, string.gsub(buf, '\\', '\\')), ');\n')
+  cpp_file:write('  constexpr static auto P_COUNT = ', #DAY_PROPERTIES, ' ;\n')
+  cpp_file:write([[
   std::array< std::array< std::vector<uint8_t>, INDICTION_LENGTH >, P_COUNT > arr_ ;
 public:
   ARRAY_OF_DATES_BY_PROPERTY_AND_YEAR()
   {
-    auto ptr = reinterpret_cast<const uint8_t*>(adpy.data()) ;
-    auto pend = ptr + adpy.size() ;
+    auto ptr = reinterpret_cast<const uint8_t*>(data_.data()) ;
+    auto pend = ptr + data_.size() ;
     while (ptr < pend) {
       uint8_t x = *ptr++;
       uint16_t property = x;
@@ -266,13 +270,94 @@ public:
     for (auto i=0u; i<a.size(); i+=2) result.emplace_back(a[i], a[i+1]) ;
     return result;
   }
-};
+}; // class ARRAY_OF_DATES_BY_PROPERTY_AND_YEAR
+]])
+  local ymd_table = {}
+  for y = 1, fi.INDICTION_LENGTH do -- save all calculations to ymd_table
+    for p = 1, #DAY_PROPERTIES do
+      local dates = { fi.days[DAY_PROPERTIES[p]].calc(y) }
+      if dates[1]==0 then goto continue end
+      for i=1, #dates, 2 do
+        local m = dates[i]
+        local d = dates[i+1]
+        local key = string.format("%.3d%.2d%.2d", y, m, d)
+        if ymd_table[key] == nil then ymd_table[key] = {} end
+        ymd_table[key][#ymd_table[key] + 1] = p
+      end
+      ::continue::
+    end
+  end
+  oct_str = {}
+  for key,val in pairs(ymd_table) do -- convert ymd_table to bytes sequence
+    if #val > 0 then
+      local year = tonumber(key:sub(1,3))
+      local month = tonumber(key:sub(4,5))
+      local day = tonumber(key:sub(6,7))
+      oct_str[#oct_str + 1] = '  "'
+      oct_str[#oct_str + 1] = to_octets(year, 2)       -- 2 bytes for year
+      oct_str[#oct_str + 1] = to_octets(month)         -- 1 byte for month
+      oct_str[#oct_str + 1] = to_octets(day)           -- 1 byte for day
+      oct_str[#oct_str + 1] = to_octets(#val)          -- 1 byte for properties count
+      for i,v in ipairs(val) do
+        oct_str[#oct_str + 1] = to_octets(v, 2)        -- 2 bytes for property as integer
+      end
+      oct_str[#oct_str + 1] = '"\n'
+    end
+  end
+  cpp_file:write('\n', [[
+class ARRAY_OF_PROPERTIES_BY_YMD {
+  constexpr static auto data_ = std::string_view(
+]])
+  buf = table.concat(oct_str)
+  cpp_file:write(buf, '  , ', select(2, string.gsub(buf, '\\', '\\')), ');\n')
+  cpp_file:write([[
+  std::vector<uint16_t> arr_ [532][12][31];
+public:
+  ARRAY_OF_PROPERTIES_BY_YMD()
+  {
+    auto ptr = reinterpret_cast<const uint8_t*>(data_.data()) ;
+    auto pend = ptr + data_.size() ;
+    while (ptr < pend) {
+      uint8_t x = *ptr++;
+      uint16_t year = x;
+      year <<= 8 ;
+      x = *ptr++;
+      year |= x;
+      uint8_t month = *ptr++;
+      uint8_t day = *ptr++;
+      uint8_t count = *ptr++;
+      auto& vec = arr_[year-1][month-1][day-1] ;
+      vec.reserve(count);
+      while (count>0) {
+        x = *ptr++;
+        uint16_t val = x;
+        val <<= 8 ;
+        x = *ptr++;
+        val |= x;
+        vec.push_back(val);
+        count--;
+      }
+    }
+  }
+  std::vector<DayProperty> get(int y, int m, int d) const
+  {
+    const auto& a = arr_[y-1][m-1][d-1];
+    std::vector<DayProperty> result;
+    if (a.size() > 0) {
+      result.resize(a.size(), DAY_PROPERTY_SIZE);
+      std::transform(a.cbegin(), a.cend(), result.begin(), [](auto x){
+        return static_cast<DayProperty>(x);
+      });
+    }
+    return result;
+  }
+}; // class ARRAY_OF_PROPERTIES_BY_YMD
 
-} // namespace without name
+} // namespace
 
 namespace fullindiction {
 
-std::vector<MonthDay> find_all_dates(const int y, const DayProperty p)
+std::vector<MonthDay> find_all_dates(int y, DayProperty p)
 {
   static const ARRAY_OF_DATES_BY_PROPERTY_AND_YEAR array_of_dates_by_property_and_year {};
   check_year_number(y) ;
@@ -280,13 +365,13 @@ std::vector<MonthDay> find_all_dates(const int y, const DayProperty p)
   return array_of_dates_by_property_and_year.get(y, p);
 }
 
-MonthDay find_date(const int y, const DayProperty p)
+MonthDay find_date(int y, DayProperty p)
 {
   auto v = find_all_dates(y, p);
   return v.empty() ? MonthDay{} : v.front() ;
 }
 
-std::vector<MonthDay> find_all_dates(const int y, std::initializer_list<DayProperty> il)
+std::vector<MonthDay> find_all_dates(int y, std::initializer_list<DayProperty> il)
 {
   std::vector<MonthDay> result;
   for (auto p: il) {
@@ -296,19 +381,19 @@ std::vector<MonthDay> find_all_dates(const int y, std::initializer_list<DayPrope
   return result;
 }
 
-MonthDay easter_date(const int y)
+MonthDay easter_date(int y)
 {
   return find_date(y, PASHA);
 }
 
-bool is_date_of(const int y, const MonthDay d, const DayProperty p)
+bool is_date_of(int y, MonthDay d, DayProperty p)
 {
   check_date(y, d);
   auto v = find_all_dates(y, p);
   return v.end() != std::find(v.begin(), v.end(), d);
 }
 
-int apostol_fast_length(const int y)
+int apostol_fast_length(int y)
 {
   check_year_number(y) ;
   const bool leap = is_leap(y) ;
@@ -320,8 +405,22 @@ int apostol_fast_length(const int y)
   return x2 - x1 - 57 ;
 }
 
+std::vector<DayProperty> find_properties(int y, MonthDay d)
+{
+  static const ARRAY_OF_PROPERTIES_BY_YMD array_of_properties_by_ymd {};
+  check_date(y, d);
+  return array_of_properties_by_ymd.get(y, d.first, d.second);
+}
+
+std::vector<DayProperty> find_properties(int y, int m, int d)
+{
+  return find_properties(y, {m, d});
+}
+
 } // namespace fullindiction
-]]
-  out2:write(c2, '\n\n')
-  assert(out2:close())
+
+]])
+  assert(cpp_file:close())
+  buf = nil
+  oct_str = nil
 end

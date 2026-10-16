@@ -12,7 +12,7 @@ TEST_CASE("test function 'find_date'"){
     REQUIRE_THROWS( fi::find_date(-1, fi::PASHA) );
     REQUIRE_THROWS( fi::find_date(0, fi::PASHA) );
     REQUIRE_THROWS( fi::find_date(533, fi::PASHA) );
-    REQUIRE_THROWS( fi::find_date(1, fi::SIZE_) );
+    REQUIRE_THROWS( fi::find_date(1, fi::DAY_PROPERTY_SIZE) );
     REQUIRE_THROWS( fi::find_date(1, static_cast<fi::DayProperty>(-1)) );
     REQUIRE_NOTHROW( fi::find_date(1, fi::PASHA) );
     REQUIRE_NOTHROW( fi::find_date(1, static_cast<fi::DayProperty>(0)) );
