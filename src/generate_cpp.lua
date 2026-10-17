@@ -120,7 +120,7 @@ std::vector<DayProperty> find_properties(int year_number_in_fullindiction,
 std::vector<DayProperty> find_properties(int year_number_in_fullindiction,
                                          const std::vector<MonthDay>& dates) ;
 int apostol_fast_length(int year_number_in_fullindiction) ;
-std::string description(DayProperty) ; // in utf8
+std::string description(DayProperty) ;                     // in utf8
 std::string description(const std::vector<DayProperty>&) ; // in utf8
 int to_year_number_in_fullindiction(int year) ;
 

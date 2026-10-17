@@ -145,7 +145,6 @@ catch(...)
 ```c++
 #pragma once
 #include <utility>
-#include <initializer_list>
 #include <vector>
 #include <string>
 

@@ -1687,6 +1687,160 @@ CREATE_DAYS_ENTRY {
   end
 }
 
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Акафистная Дионисиатская (Мироточивая)»",
+  keys = { 'MARIAN_ICON_AKATHISTDIONYSIATA' },
+  calc = function(year) return GET_DATEOBJ(year, 'LENT_SUN4'):i(6):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Аз есмь с вами, и никтоже на вы (Леуши́нская)»",
+  keys = { 'MARIAN_ICON_AZYESMSAMILEUSHINSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'LENT_SUN4'):i(6):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Девпетуровская-Тамбовская»",
+  keys = { 'MARIAN_ICON_DEVPETUROVSKAYATAMBOVSKAYA' },
+  calc = function(year)
+    local result = Date:new(year,2,28)
+    if result:l() then result:i() end
+    return result:md()
+  end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Дубенская (Красногорская)»",
+  keys = { 'MARIAN_ICON_DUBENSKAYAKRASNOGORSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN4_AFTER_EASTER'):i(3):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Моздокская (Иверская)»",
+  keys = { 'MARIAN_ICON_MOZDOKSKAYAIVERSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN4_AFTER_EASTER'):i(3):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Дектоурская (Доктоурская)»",
+  keys = { 'MARIAN_ICON_DOKTOURSKAYA', 'MARIAN_ICON_DEKTOURSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'PENTECOST_SUN'):i(7):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Избавление От Бед Страждущих»",
+  keys = { 'MARIAN_ICON_IZBAVLENIEOTBED', 'MARIAN_ICON_DELIVERANCEFROMAFFLICTIONS' },
+  calc = function(year) return GET_DATEOBJ(year, 'PENTECOST_SUN'):i(7):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Нерушимая Стена»",
+  keys = { 'MARIAN_ICON_UNBREAKABLEWALL' },
+  calc = function(year) return GET_DATEOBJ(year, 'PENTECOST_SUN'):i(7):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Умягчение Злых Сердец»",
+  keys = { 'MARIAN_ICON_SOFTENINGOFEVILHEARTS' },
+  calc = function(year) return GET_DATEOBJ(year, 'PENTECOST_SUN'):i(7):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Живоносный Источник»",
+  keys = { 'MARIAN_ICON_LIFEGIVINGSPRING' },
+  calc = function(year) return GET_DATEOBJ(year, 'PASHA'):i(5):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Межеричская (Жизнеподательница)»",
+  keys = { 'MARIAN_ICON_ZHIZNEPODATELNITSA', 'MARIAN_ICON_MEZHIRICHSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN6_AFTER_EASTER'):i(2):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Зна́мение Курская-Коренная»",
+  keys = { 'MARIAN_ICON_KURSKROOTSIGN' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN1_AFTER_PENTECOST'):i(5):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Табынская»",
+  keys = { 'MARIAN_ICON_TABYNSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN1_AFTER_PENTECOST'):i(5):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Иверская»",
+  keys = { 'MARIAN_ICON_IVERSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'PASHA'):i(2):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Одигитрия Шуйская»",
+  keys = { 'MARIAN_ICON_HODEGETRIASHUYSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'PASHA'):i(2):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Кипрская (Стромынская)»",
+  keys = { 'MARIAN_ICON_CYPRUSSTROMYNSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'CHEESE_SUN'):i(7):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Кипрская»",
+  keys = { 'MARIAN_ICON_CYPRUS' },
+  calc = function(year) return GET_DATEOBJ(year, 'PENTECOST_SUN'):i(1):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Тупичевская»",
+  keys = { 'MARIAN_ICON_TUPICHEVSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'PENTECOST_SUN'):i(1):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Казанская Коробейниковская»",
+  keys = { 'MARIAN_ICON_KAZANKOROBEINIKOVSKAYA' },
+  calc = function(year) return Date:new(year,6,18):itowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Прибавление Ума»",
+  keys = { 'MARIAN_ICON_ADDITIONOFMIND' },
+  calc = function(year) return Date:new(year,8,16):itowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Марьиногорская»",
+  keys = { 'MARIAN_ICON_MARYINOGORSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN1_AFTER_PENTECOST'):i(4):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Споручница грешных Корецкая»",
+  keys = { 'MARIAN_ICON_SURETYOFSINNERSKORETSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'PENTECOST_SUN'):i(4):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Умиление Псковско-Печерская»",
+  keys = { 'MARIAN_ICON_TENDERNESSPSKOVPECHERSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN6_AFTER_EASTER'):i(7):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Челнская»",
+  keys = { 'MARIAN_ICON_CHELNSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN6_AFTER_EASTER'):i(7):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "иконы Божией Матери «Касперовская»",
+  keys = { 'MARIAN_ICON_KASPEROVSKAYA' },
+  calc = function(year) return GET_DATEOBJ(year, 'PASHA'):i(3):md() end
+}
+
 --#######################################################################--
 --##############   return table for user API   ##########################--
 --#######################################################################--
