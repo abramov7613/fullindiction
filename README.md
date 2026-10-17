@@ -321,10 +321,36 @@ enum class DayProperty {
   SOLID_WEEK_PENTECOST,///< Сплошная седмица - Троицкая
   SOLID_WEEK_CHEESE,///< Сплошная седмица - Сырная (Масленица)
   SOLID_WEEK_PUBLICAN_PHARISEE,///< Сплошная седмица - Мытаря и фарисея
+  MARIAN_ICON_AKATHISTDIONYSIATA,///< иконы Божией Матери «Акафистная Дионисиатская (Мироточивая)»
+  MARIAN_ICON_AZYESMSAMILEUSHINSKAYA,///< иконы Божией Матери «Аз есмь с вами, и никтоже на вы (Леуши́нская)»
+  MARIAN_ICON_DEVPETUROVSKAYATAMBOVSKAYA,///< иконы Божией Матери «Девпетуровская-Тамбовская»
+  MARIAN_ICON_DUBENSKAYAKRASNOGORSKAYA,///< иконы Божией Матери «Дубенская (Красногорская)»
+  MARIAN_ICON_MOZDOKSKAYAIVERSKAYA,///< иконы Божией Матери «Моздокская (Иверская)»
+  MARIAN_ICON_DOKTOURSKAYA,///< иконы Божией Матери «Дектоурская (Доктоурская)»
+  MARIAN_ICON_IZBAVLENIEOTBED,///< иконы Божией Матери «Избавление От Бед Страждущих»
+  MARIAN_ICON_UNBREAKABLEWALL,///< иконы Божией Матери «Нерушимая Стена»
+  MARIAN_ICON_SOFTENINGOFEVILHEARTS,///< иконы Божией Матери «Умягчение Злых Сердец»
+  MARIAN_ICON_LIFEGIVINGSPRING,///< иконы Божией Матери «Живоносный Источник»
+  MARIAN_ICON_ZHIZNEPODATELNITSA,///< иконы Божией Матери «Межеричская (Жизнеподательница)»
+  MARIAN_ICON_KURSKROOTSIGN,///< иконы Божией Матери «Зна́мение Курская-Коренная»
+  MARIAN_ICON_TABYNSKAYA,///< иконы Божией Матери «Табынская»
+  MARIAN_ICON_IVERSKAYA,///< иконы Божией Матери «Иверская»
+  MARIAN_ICON_HODEGETRIASHUYSKAYA,///< иконы Божией Матери «Одигитрия Шуйская»
+  MARIAN_ICON_CYPRUSSTROMYNSKAYA,///< иконы Божией Матери «Кипрская (Стромынская)»
+  MARIAN_ICON_CYPRUS,///< иконы Божией Матери «Кипрская»
+  MARIAN_ICON_TUPICHEVSKAYA,///< иконы Божией Матери «Тупичевская»
+  MARIAN_ICON_KAZANKOROBEINIKOVSKAYA,///< иконы Божией Матери «Казанская Коробейниковская»
+  MARIAN_ICON_ADDITIONOFMIND,///< иконы Божией Матери «Прибавление Ума»
+  MARIAN_ICON_MARYINOGORSKAYA,///< иконы Божией Матери «Марьиногорская»
+  MARIAN_ICON_SURETYOFSINNERSKORETSKAYA,///< иконы Божией Матери «Споручница грешных Корецкая»
+  MARIAN_ICON_TENDERNESSPSKOVPECHERSKAYA,///< иконы Божией Матери «Умиление Псковско-Печерская»
+  MARIAN_ICON_CHELNSKAYA,///< иконы Божией Матери «Челнская»
+  MARIAN_ICON_KASPEROVSKAYA,///< иконы Божией Матери «Касперовская»
   DAY_PROPERTY_SIZE
 };
 using enum DayProperty ;
-//...
+// таблица псевдонимов
+// ...
 // функции
 MonthDay easter_date(int year_number_in_fullindiction) ;
 MonthDay find_date(int year_number_in_fullindiction, DayProperty property) ;
