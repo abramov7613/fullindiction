@@ -1,6 +1,6 @@
 ## fullindiction - это
 
-Библиотека которая реализует календарные вычисления для православной христианской церкви на языке Lua 5.4 и предоставляет интерфейс для использования из приложений C++20. Вообще изначально проект задумывался как чистый C++ в режиме compile-time, но тесты показали что современные компиляторы пока что сильно ограничены при выполнении объемных вычислений на этапе компиляции, поэтому было решено перейти на Lua с последующим экспортом. Lua выбрана еще по причине что семантика таблиц в языке в сочетании с замыканиями позволяет более удобно описывать логику декларативным способом.
+Библиотека которая реализует календарные вычисления для православной христианской церкви на языке Lua 5.4 и предоставляет интерфейс для использования из приложений C++20. Вообще изначально проект задумывался как чистый C++ в режиме compile-time, но тесты показали что современные компиляторы пока что сильно ограничены при выполнении объемных вычислений на этапе компиляции, поэтому было решено перейти на Lua с последующим экспортом. Lua выбрана еще по причине того что семантика таблиц языка в сочетании с замыканиями позволяет более наглядно описывать логику декларативным способом.
 
 ### Теория
 
@@ -15,12 +15,14 @@
 По истечении Великого индиктиона даты христианской Пасхи, вычисленные по юлианскому календарю и православной пасхалии, повторяются в том же порядке. Это связано с тем, что через каждые 532 года расчётные фазы Луны и дни недели приходятся на те же числа месяца.
 
 Итак, для расчетов мы имеем два числовых ряда: один - циклический, второй - стремится к бесконечности. Первый выражает порядковый номер года внутри своего великого индиктиона, второй выражает фактический год для любой даты:
-```
+```text
 первый ряд: 1, 2, ..., 532, 1, 2, 3, ...
 второй ряд: 1941, 1942, 1943, 1944,  ...
 ```
-Тогда, чтобы найти порядковый номер года для любой даты нужно: (при условии что для 1941 значение из второго ряда всегда равно 1) определить, насколько оно удалено от 1941 `n = YEAR − 1941`. И взять остаток по модулю 532 `N = (n mod 532) + 1`. Итого: `N = ((YEAR − 1941) mod 532) + 1`.
-
+Известно что 1941 год соответствует единице, тогда, чтобы найти порядковый номер года для любой даты нужно определить насколько она удалена от 1941: `n = YEAR − 1941`. И взять остаток по модулю 532: `N = (n mod 532) + 1`. Итоговая формула:
+```text
+N = ((YEAR − 1941) mod 532) + 1
+```
 В Lua 5.4 оператор `%` работает с отрицательными числами так, как нужно для циклического индекса, поэтому формула корректна и ниже 1941 :
 ```lua
 function to_year_number_in_fullindiction(year)
@@ -37,14 +39,15 @@ int to_year_number_in_fullindiction(int year)
 
 ### Как устроен проект
 
-```
+```text
+📂 fullindiction
 ├── CMakeLists.txt
 ├── LICENSE
 ├── README.md
-├── src
+├── 📂 src
 │   ├── fullindiction.lua
 │   └── generate_cpp.lua
-└── tests
+└── 📂 tests
     ├── catch_amalgamated.cpp
     ├── catch_amalgamated.hpp
     ├── CMakeLists.txt
@@ -55,9 +58,8 @@ int to_year_number_in_fullindiction(int year)
     ├── find_properties_test.cpp
     ├── find_properties_test.txt
     └── my_test_framework.hpp
-
 ```
-Все календарные вычисления вынесены в `fullindiction.lua` и ограничены круговым циклом в 532 года, поэтому одним из входных значений для API является не число года конкретной даты, а порядковый номер года в пределах своего великого индиктиона. Далее файл `generate_cpp.lua` импортирует все алгоритмы из `fullindiction.lua` и производит вычисления для всех возможных комбинаций, то есть для каждого дня/месяца/года в пределах 532-х летнего цикла, и сохраняет результат в `cpp` файл, предоставляя и `header` файл как интерфейс для доступа из C++ приложения. Все эти действия автоматизированы скриптами CMake, так что для интеграции в проект можно пользоваться такими стандартными методами как `add_subdirectory` или `FetchContent`. Если интерпретатор Lua не установлен в системе то при сборке проекта нужен доступ в интернет, так как CMake будет пытаться скачать исходники чтобы собрать свой интерпретатор.
+Все календарные вычисления вынесены в `fullindiction.lua` и ограничены круговым циклом в 532 года, поэтому одним из входных значений для API является не число года конкретной даты, а порядковый номер года в пределах своего великого индиктиона. Далее файл `generate_cpp.lua` импортирует все алгоритмы из `fullindiction.lua` и производит вычисления для всех возможных комбинаций, то есть для каждого дня/месяца/года в пределах 532-х летнего цикла, и сохраняет результат в `cpp` файл, предоставляя и `header` файл как интерфейс для доступа из C++ приложения. Все эти действия автоматизированы скриптами CMake, так что для интеграции библиотеки в другой проект можно пользоваться такими стандартными методами как `add_subdirectory` или `FetchContent`. Если интерпретатор Lua не установлен в системе то при сборке проекта нужен доступ в интернет, так как CMake будет пытаться скачать исходники чтобы собрать свой интерпретатор.
 
 ### Как использовать
 
@@ -138,7 +140,7 @@ catch(...)
 }
 
 ```
-#### Заголовочный файл fullindiction.h (создается автоматически)
+##### файл fullindiction.h (создается автоматически)
 
 ```c++
 #pragma once
@@ -327,17 +329,22 @@ using enum DayProperty ;
 // функции
 MonthDay easter_date(int year_number_in_fullindiction) ;
 MonthDay find_date(int year_number_in_fullindiction, DayProperty property) ;
-bool is_date_of(int year_number_in_fullindiction, MonthDay date, DayProperty property) ;
-std::vector<MonthDay> find_all_dates(int year_number_in_fullindiction, DayProperty property) ;
+bool is_date_of(int year_number_in_fullindiction,
+                MonthDay date, DayProperty property) ;
 std::vector<MonthDay> find_all_dates(int year_number_in_fullindiction,
-                                     std::initializer_list<DayProperty> properties) ;
-std::vector<DayProperty> find_properties(int year_number_in_fullindiction, MonthDay date) ;
-std::vector<DayProperty> find_properties(int year_number_in_fullindiction, int month, int day) ;
+                                     DayProperty property) ;
+std::vector<MonthDay> find_all_dates(int year_number_in_fullindiction,
+                                     const std::vector<DayProperty>& properties) ;
 std::vector<DayProperty> find_properties(int year_number_in_fullindiction,
-                                         std::vector<MonthDay> dates) ;
+                                         MonthDay date) ;
+std::vector<DayProperty> find_properties(int year_number_in_fullindiction,
+                                         int month,
+                                         int day) ;
+std::vector<DayProperty> find_properties(int year_number_in_fullindiction,
+                                         const std::vector<MonthDay>& dates) ;
 int apostol_fast_length(int year_number_in_fullindiction) ;
-std::string description(DayProperty) ; // in utf8
-std::string description(std::vector<DayProperty>) ; // in utf8
+std::string description(DayProperty) ;                     // in utf8
+std::string description(const std::vector<DayProperty>&) ; // in utf8
 int to_year_number_in_fullindiction(int year) ;
 
 } // namespace fullindiction

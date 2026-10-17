@@ -66,7 +66,6 @@ do
   h_file:write([[
 #pragma once
 #include <utility>
-#include <initializer_list>
 #include <vector>
 #include <string>
 
@@ -107,17 +106,22 @@ enum class DayProperty {
 // функции
 MonthDay easter_date(int year_number_in_fullindiction) ;
 MonthDay find_date(int year_number_in_fullindiction, DayProperty property) ;
-bool is_date_of(int year_number_in_fullindiction, MonthDay date, DayProperty property) ;
-std::vector<MonthDay> find_all_dates(int year_number_in_fullindiction, DayProperty property) ;
+bool is_date_of(int year_number_in_fullindiction,
+                MonthDay date, DayProperty property) ;
 std::vector<MonthDay> find_all_dates(int year_number_in_fullindiction,
-                                     std::initializer_list<DayProperty> properties) ;
-std::vector<DayProperty> find_properties(int year_number_in_fullindiction, MonthDay date) ;
-std::vector<DayProperty> find_properties(int year_number_in_fullindiction, int month, int day) ;
+                                     DayProperty property) ;
+std::vector<MonthDay> find_all_dates(int year_number_in_fullindiction,
+                                     const std::vector<DayProperty>& properties) ;
 std::vector<DayProperty> find_properties(int year_number_in_fullindiction,
-                                         std::vector<MonthDay> dates) ;
+                                         MonthDay date) ;
+std::vector<DayProperty> find_properties(int year_number_in_fullindiction,
+                                         int month,
+                                         int day) ;
+std::vector<DayProperty> find_properties(int year_number_in_fullindiction,
+                                         const std::vector<MonthDay>& dates) ;
 int apostol_fast_length(int year_number_in_fullindiction) ;
 std::string description(DayProperty) ; // in utf8
-std::string description(std::vector<DayProperty>) ; // in utf8
+std::string description(const std::vector<DayProperty>&) ; // in utf8
 int to_year_number_in_fullindiction(int year) ;
 
 } // namespace fullindiction
@@ -301,12 +305,12 @@ public:
       local month = tonumber(key:sub(4,5))
       local day = tonumber(key:sub(6,7))
       oct_str[#oct_str + 1] = '  "'
-      oct_str[#oct_str + 1] = to_octets(year, 2)       -- 2 bytes for year
-      oct_str[#oct_str + 1] = to_octets(month)         -- 1 byte for month
-      oct_str[#oct_str + 1] = to_octets(day)           -- 1 byte for day
-      oct_str[#oct_str + 1] = to_octets(#val)          -- 1 byte for properties count
+      oct_str[#oct_str + 1] = to_octets(year, 2)  -- 2 bytes for year
+      oct_str[#oct_str + 1] = to_octets(month)    -- 1 byte for month
+      oct_str[#oct_str + 1] = to_octets(day)      -- 1 byte for day
+      oct_str[#oct_str + 1] = to_octets(#val)     -- 1 byte for properties count
       for i,v in ipairs(val) do
-        oct_str[#oct_str + 1] = to_octets(v-1, 2)        -- 2 bytes for property as integer
+        oct_str[#oct_str + 1] = to_octets(v-1, 2) -- 2 bytes for property as integer
       end
       oct_str[#oct_str + 1] = '"\n'
     end
@@ -378,10 +382,10 @@ MonthDay find_date(int y, DayProperty p)
   return v.empty() ? MonthDay{} : v.front() ;
 }
 
-std::vector<MonthDay> find_all_dates(int y, std::initializer_list<DayProperty> il)
+std::vector<MonthDay> find_all_dates(int y, const std::vector<DayProperty>& vp)
 {
   std::vector<MonthDay> result;
-  for (auto p: il) {
+  for (auto p: vp) {
     auto v = find_all_dates(y,p);
     std::move(v.begin(), v.end(), std::back_inserter(result));
   }
@@ -424,7 +428,7 @@ std::vector<DayProperty> find_properties(int y, int m, int d)
   return find_properties(y, {m, d});
 }
 
-std::vector<DayProperty> find_properties(int y, std::vector<MonthDay> dates)
+std::vector<DayProperty> find_properties(int y, const std::vector<MonthDay>& dates)
 {
   std::vector<DayProperty> result;
   for (auto md: dates) {
@@ -454,7 +458,7 @@ std::string description(DayProperty p)
   return {};
 }
 
-std::string description(std::vector<DayProperty> p)
+std::string description(const std::vector<DayProperty>& p)
 {
   std::string result;
   for (auto x: p) { result += description(x) + ". "; }

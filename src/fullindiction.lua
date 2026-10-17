@@ -22,7 +22,7 @@
       WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
       FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
       OTHER DEALINGS IN THE SOFTWARE.
-]]
+--]]
 
 local INDICTION_LENGTH = 532
 local INDICTION_OFFSET = 1940
@@ -229,8 +229,9 @@ local days = {}
 --[[
     Инварианты:
       >  'days' - ассоциативный массив таблиц, строковые ключи уникальны
-         и определяют одну или несколько подвижных дат внутри года, ключи
-         должны соответствовать правилу для имен переменных языка С
+         и определяют одну или несколько подвижных дат внутри года
+      >  Ключи должны соответствовать правилу для имен переменных языка С
+      >  Разные ключи могут ссылаться на одни и теже данные
       >  поле 'desc' элемента массива должно содержать строку-описание
       >  поле 'calc' элемента массива должно содержать функцию принимающую
          номер года и в зависимости от ключа возвращающую несколько
@@ -240,9 +241,9 @@ local days = {}
          порядку добавления нового элемента
 --]]
 
-local add_idx = 1
-
-local function CREATE_DAYS_ENTRY (t) -- добавление новой записи в таблицу
+-- добавление новой записи в таблицу
+local days_add_idx = 1
+local function CREATE_DAYS_ENTRY (t)
   if type(t)~='table' or
      t.keys==nil or
      t.desc==nil or
@@ -254,14 +255,17 @@ local function CREATE_DAYS_ENTRY (t) -- добавление новой запи
    local q = {}
    q.desc = t.desc
    q.calc = t.calc
-   q.index = add_idx
-   add_idx = add_idx + 1
+   q.index = days_add_idx
+   days_add_idx = days_add_idx + 1
    days[v] = q
   end
 end
 
-local function GET_DATEOBJ(year, key) -- извлечение из таблицы в виде объекта класса Date
-  if type(key)~='string' or days[key]==nil then error"GET_DATEOBJ function error" end
+-- извлечение из таблицы значения в виде объекта класса Date
+local function GET_DATEOBJ(year, key)
+  if type(key)~='string' or days[key]==nil then
+    error"GET_DATEOBJ function error"
+  end
   return Date:new(year, days[key]["calc"](year))
 end
 
@@ -1296,7 +1300,7 @@ CREATE_DAYS_ENTRY {
 CREATE_DAYS_ENTRY {
   desc = "Отдание праздника Сретения Господня",
   keys = { 'ENDOF_GOD_MEETING' },
-  calc = function(year)
+  calc = function(year) -- типикон, стр.501
     local dd = GET_DATEOBJ(year, 'GOD_MEETING')
     local forgiveness = GET_DATEOBJ(year, 'CHEESE_SUN')
     if dd == forgiveness  then return 0,0 end
