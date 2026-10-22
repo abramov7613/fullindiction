@@ -1,3 +1,9 @@
+[![C++20](https://img.shields.io/badge/C%2B%2B-20-blue.svg)](https://en.cppreference.com/w/cpp/20)
+[![CMake](https://img.shields.io/badge/CMake-3.31%2B-blue.svg)](https://cmake.org/)
+[![Lua](https://img.shields.io/badge/Lua-5.4%2B-blue.svg)](https://lua.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![build & test](https://github.com/abramov7613/fullindiction/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/abramov7613/fullindiction/actions/workflows/cmake-multi-platform.yml)
+
 ## fullindiction - это
 
 Библиотека которая реализует календарные вычисления для православной христианской церкви на языке Lua 5.4 и предоставляет интерфейс для использования из приложений C++20. Вообще изначально проект задумывался как чистый C++ в режиме compile-time, но тесты показали что современные компиляторы пока что сильно ограничены при выполнении объемных вычислений на этапе компиляции, поэтому было решено перейти на Lua с последующим экспортом. Lua выбрана еще по причине того что семантика таблиц языка в сочетании с замыканиями позволяет более наглядно описывать логику декларативным способом.
@@ -84,6 +90,22 @@ cd build
 ctest
 ```
 после этого в каталоге `src` появятся файлы `fullindiction.h` и `fullindiction.cpp`, a в каталоге `build` будет бинарный файл библиотеки готовый для линковки к стороннему приложению, имя файла зависит от платформы.
+
+#### интеграция через CMake/FetchContent
+
+```cmake
+# ...
+include(FetchContent)
+FetchContent_Declare(
+    fullindiction
+    GIT_REPOSITORY https://github.com/abramov7613/fullindiction.git
+    GIT_TAG v1.0.7
+)
+FetchContent_MakeAvailable(fullindiction)
+
+target_link_libraries(my_app PRIVATE fullindiction)
+# ...
+```
 
 #### Пример
 

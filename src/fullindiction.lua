@@ -782,7 +782,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "Суббота 1-й седмицы великого поста",
+  desc = "Суббота 1-й седмицы великого поста. Вмч. Феодора Тирона",
   keys = { 'LENT_WEEK1_SAT', 'LENT_SAT1', 'THEODOR_SAT', 'FEODOR_SAT' },
   calc = function(year) return GET_DATEOBJ(year, 'CHEESE_SUN'):i(6):md() end
 }
@@ -830,7 +830,7 @@ CREATE_DAYS_ENTRY {
 }
 
 CREATE_DAYS_ENTRY {
-  desc = "Неделя 2-я Великого поста",
+  desc = "Неделя 2-я Великого поста. Свт. Григория Паламы, архиеп. Фессалонитского",
   keys = { 'LENT_SUN2', 'GREGORY_PALAMA' },
   calc = function(year) return GET_DATEOBJ(year, 'LENT_SUN1'):i(7):md() end
 }
@@ -1839,6 +1839,90 @@ CREATE_DAYS_ENTRY {
   desc = "иконы Божией Матери «Касперовская»",
   keys = { 'MARIAN_ICON_KASPEROVSKAYA' },
   calc = function(year) return GET_DATEOBJ(year, 'PASHA'):i(3):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Прп. Варлаа́ма Ху́тынского",
+  keys = { 'PREP_VARLAAM_HUT' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN1_AFTER_PENTECOST'):i(5):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Перенесение мощей блгвв. кн. Петра, в иночестве Давида, и кн. Февронии, в иночестве Евфросинии, Муромских чудотворцев",
+  keys = { 'BLAG_KN_PETR_FEVRONIYA' },
+  calc = function(year) return Date:new(year,9,6):dtowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Прп. Пахомия Кенского",
+  keys = { 'PREP_PAHOMIY_KENSK' },
+  calc = function(year) return GET_DATEOBJ(year, 'SAT_AFTER_THEOPHANY'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Прп. Шио Мгвимского (Груз.)",
+  keys = { 'PREP_SHIO_MGVIM' },
+  calc = function(year) return GET_DATEOBJ(year, 'CHEESE_THU'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Мчч. Христодула и Анастасии Патрских, убиенных в Ахаии",
+  keys = { 'MUCH_HRISTODUL_ANASTASIA_PATR' },
+  calc = function(year) return GET_DATEOBJ(year, 'PASHA'):i(2):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Прав. Иосифа Аримафейского и Никодима",
+  keys = { 'PRAV_IOSIF_NIKODIM' },
+  calc = function(year) return GET_DATEOBJ(year, 'ANTIPASHA'):i(7):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Блгв. Тамары, царицы Грузинской",
+  keys = { 'BLAG_TAMARA' },
+  calc = function(year) return GET_DATEOBJ(year, 'ANTIPASHA'):i(7):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Перенесение мощей мч. Авраамия Болгарского",
+  keys = { 'MUCH_AVRAAMIY_BOLG' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN3_AFTER_EASTER'):i(7):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Прав. Тавифы",
+  keys = { 'PRAV_TAVIFA' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN3_AFTER_EASTER'):i(7):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Мучеников, в долине Ферейдан (Иран) от персов пострадавших (Груз.)",
+  keys = { 'MUCH_FEREIDAN' },
+  calc = function(year) return GET_DATEOBJ(year, 'ASCENSION'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Прп. Додо Гареджийского (Груз.)",
+  keys = { 'PREP_DODO_GARED' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN7_AFTER_EASTER'):i(3):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Прп. Давида Гареджийского (Груз.)",
+  keys = { 'PREP_DAVID_GARED' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN7_AFTER_EASTER'):i(4):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Свт. Арсения, еп. Тверского",
+  keys = { 'SVT_ARSENIY_TVER' },
+  calc = function(year) return Date:new(year,6,30):itowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Прпп. Тихона, Василия и Никона Соколовских",
+  keys = { 'PREP_TIHON_VASILIY_NIKON' },
+  calc = function(year) return GET_DATEOBJ(year, 'SVT_ARSENIY_TVER'):md() end
 }
 
 --#######################################################################--

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.31)
 
-project(fullindiction VERSION 1.0.6)
+project(fullindiction VERSION 1.0.7)
 
 option(FULLINDICTION_BUILD_TESTS "Build fullindiction tests" ${PROJECT_IS_TOP_LEVEL})
 option(FULLINDICTION_INSTALL "Enable installation rules" ${PROJECT_IS_TOP_LEVEL})
@@ -17,6 +17,7 @@ function(check_lua_version result luafile)
     if(output_variable MATCHES "^.+([0-9]+\.[0-9]+\.?[0-9]*).+$")
       set(version ${CMAKE_MATCH_1})
       if(version VERSION_GREATER_EQUAL "5.4")
+        set(${result} TRUE PARENT_SCOPE)
         return()
       endif()
     endif()
