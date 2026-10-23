@@ -99,7 +99,7 @@ include(FetchContent)
 FetchContent_Declare(
     fullindiction
     GIT_REPOSITORY https://github.com/abramov7613/fullindiction.git
-    GIT_TAG v1.0.7
+    GIT_TAG v1.0.8
 )
 FetchContent_MakeAvailable(fullindiction)
 
@@ -162,7 +162,7 @@ catch(...)
 }
 
 ```
-##### файл fullindiction.h (создается автоматически)
+#### файл fullindiction.h (создается автоматически)
 
 ```c++
 #pragma once
@@ -256,7 +256,7 @@ enum class DayProperty {
   LENT_WEEK1_WED,///< Среда 1-й седмицы великого поста
   LENT_WEEK1_THU,///< Четверг 1-й седмицы великого поста
   LENT_WEEK1_FRI,///< Пятница 1-й седмицы великого поста
-  LENT_WEEK1_SAT,///< Суббота 1-й седмицы великого поста
+  LENT_WEEK1_SAT,///< Суббота 1-й седмицы великого поста. Вмч. Феодора Тирона
   LENT_SUN1,///< Неделя 1-я Великого поста. Торжество Православия
   LENT_WEEK2_MON,///< Понедельник 2-й седмицы великого поста
   LENT_WEEK2_TUE,///< Вторник 2-й седмицы великого поста
@@ -264,7 +264,7 @@ enum class DayProperty {
   LENT_WEEK2_THU,///< Четверг 2-й седмицы великого поста
   LENT_WEEK2_FRI,///< Пятница 2-й седмицы великого поста
   LENT_WEEK2_SAT,///< Суббота 2-й седмицы великого поста
-  LENT_SUN2,///< Неделя 2-я Великого поста
+  LENT_SUN2,///< Неделя 2-я Великого поста. Свт. Григория Паламы, архиеп. Фессалонитского
   LENT_WEEK3_MON,///< Понедельник 3-й седмицы великого поста
   LENT_WEEK3_TUE,///< Вторник 3-й седмицы великого поста
   LENT_WEEK3_WED,///< Среда 3-й седмицы великого поста
@@ -368,11 +368,141 @@ enum class DayProperty {
   MARIAN_ICON_TENDERNESSPSKOVPECHERSKAYA,///< иконы Божией Матери «Умиление Псковско-Печерская»
   MARIAN_ICON_CHELNSKAYA,///< иконы Божией Матери «Челнская»
   MARIAN_ICON_KASPEROVSKAYA,///< иконы Божией Матери «Касперовская»
+  PREP_VARLAAM_HUT,///< Прп. Варлаа́ма Ху́тынского
+  BLAG_KN_PETR_FEVRONIYA,///< Перенесение мощей блгвв. кн. Петра, в иночестве Давида, и кн. Февронии, в иночестве Евфросинии, Муромских чудотворцев
+  PREP_PAHOMIY_KENSK,///< Прп. Пахомия Кенского
+  PREP_SHIO_MGVIM,///< Прп. Шио Мгвимского (Груз.)
+  MUCH_HRISTODUL_ANASTASIA_PATR,///< Мчч. Христодула и Анастасии Патрских, убиенных в Ахаии
+  PRAV_IOSIF_NIKODIM,///< Прав. Иосифа Аримафейского и Никодима
+  BLAG_TAMARA,///< Блгв. Тамары, царицы Грузинской
+  MUCH_AVRAAMIY_BOLG,///< Перенесение мощей мч. Авраамия Болгарского
+  PRAV_TAVIFA,///< Прав. Тавифы
+  MUCH_FEREIDAN,///< Мучеников, в долине Ферейдан (Иран) от персов пострадавших (Груз.)
+  PREP_DODO_GARED,///< Прп. Додо Гареджийского (Груз.)
+  PREP_DAVID_GARED,///< Прп. Давида Гареджийского (Груз.)
+  SVT_ARSENIY_TVER,///< Свт. Арсения, еп. Тверского
+  PREP_TIHON_VASILIY_NIKON,///< Прпп. Тихона, Василия и Никона Соколовских
+  PREP_MUCH_LIPS,///< Прмчч. Неофита, Ионы, Неофита, Ионы и Парфения Липсийских
+  SOBOR_VALAAM,///< Собор Валаамских святых
+  SOBOR_BESSREBR,///< Собор всех Бессребреников
+  SOBOR_TVER,///< Собор Тверских святых
+  SOBOR_KUZBAS,///< Собор Кузбасских святых
+  SOBOR_DAVID_GARED,///< Преподобномучеников отцов Давидо-Гареджийских (Груз.)
+  SOBOR_ALTAY,///< Собор Алтайских святых
+  SOBOR_PREP_AFON,///< Собор всех преподобных и Богоносных отцов, во Святой Горе Афонской просиявших
+  SOBOR_BELRUS,///< Собор Белорусских святых
+  SOBOR_VOLOGD,///< Собор Вологодских святых
+  SOBOR_NOVGOROD,///< Собор Новгородских святых
+  SOBOR_PSKOV,///< Собор Псковских святых
+  SOBOR_PITER,///< Собор святых Санкт-Петербургской митрополии
+  SOBOR_UDMURT,///< Собор святых Удмуртской земли
+  SOBOR_VOLGOGRAD,///< Собор всех святых, в земле Волгоградской просиявших
+  SOBOR_SPAIN,///< Собор святых, в земле Испанской и Португальской просиявших
+  SOBOR_KUBAN,///< Собор святых Кубанской митрополии
+  SOBOR_CHELYABINSK,///< Собор святых Челябинской митрополии
+  SOBOR_MOSCOW,///< Собор Московских святых
+  SOBOR_NIJEGORODSK,///< Собор святых Нижегородской митрополии
+  SOBOR_SARATOV,///< Собор Саратовских святых
+  SOBOR_BUTOV,///< Собор новомучеников, в Бутове пострадавших
+  SOBOR_KAZAHSTAN,///< Собор новомучеников и исповедников Казахстанских
+  SOBOR_KAREL,///< Собор новомучеников и исповедников земли Карельской
+  SOBOR_PERM,///< Собор святых Пермской митрополии
+  SOBOR_PREP_PSKOVOPECH,///< Собор преподобных отцов Псково-Печерских
+  SOBOR_PREP_SINAY,///< Собор преподобных отцов, на Богошественной Горе Синай подвизавшихся
+  SOBOR_MUCH_HOLMSK,///< Собор мучеников Холмских и Подляшских
+  SOBOR_ALL_PREP,///< Собор всех преподобных отцов, в подвиге просиявших
+  SOBOR_PREP_KIEVOPECH,///< Собор всех преподобных отцов Киево-Печерских
+  SOBOR_SMOLENSK,///< Собор Смоленских святых
+  SOBOR_ALAN,///< Собор Аланских святых
+  SOBOR_GERMAN,///< Собор святых, в земле Германской просиявших
   DAY_PROPERTY_SIZE
-};
-using enum DayProperty ;
+}; using enum DayProperty;
 // таблица псевдонимов
-// ...
+constexpr auto PASHA = EASTER ; ///< Светлое Христово Воскресение. ПАСХА
+constexpr auto PASCHA = EASTER ; ///< Светлое Христово Воскресение. ПАСХА
+constexpr auto RESURRECTION = EASTER ; ///< Светлое Христово Воскресение. ПАСХА
+constexpr auto ANTIPASHA = SUN2_AFTER_EASTER ; ///< Неделя 2-я по Пасхе, апостола Фомы́. Антипасха
+constexpr auto FOMA_SUN = SUN2_AFTER_EASTER ; ///< Неделя 2-я по Пасхе, апостола Фомы́. Антипасха
+constexpr auto ANTIPASCHA = SUN2_AFTER_EASTER ; ///< Неделя 2-я по Пасхе, апостола Фомы́. Антипасха
+constexpr auto RADONICA = WEEK2_AFTER_EASTER_TUE ; ///< Вторник 2-й седмицы по Пасхе. Ра́доница. Поминовение усопших
+constexpr auto MID_PENTECOST = WEEK4_AFTER_EASTER_WED ; ///< Среда 4-й седмицы по Пасхе. Преполове́ние Пятидесятницы
+constexpr auto ENDOF_MID_PENTECOST = WEEK5_AFTER_EASTER_WED ; ///< Среда 5-й седмицы по Пасхе. Отдание праздника Преполовения Пятидесятницы
+constexpr auto ENDOF_PASHA = WEEK6_AFTER_EASTER_WED ; ///< Среда 6-й седмицы по Пасхе. Отдание праздника Пасхи
+constexpr auto ENDOF_PASCHA = WEEK6_AFTER_EASTER_WED ; ///< Среда 6-й седмицы по Пасхе. Отдание праздника Пасхи
+constexpr auto ENDOF_EASTER = WEEK6_AFTER_EASTER_WED ; ///< Среда 6-й седмицы по Пасхе. Отдание праздника Пасхи
+constexpr auto ASCENSION = WEEK6_AFTER_EASTER_THU ; ///< Четверг 6-й седмицы по Пасхе. Вознесе́ние Госпо́дне
+constexpr auto FATHERS_ECU_COUNCIL_1 = SUN7_AFTER_EASTER ; ///< Неделя 7-я по Пасхе. Святых отцов Первого Вселенского Собора
+constexpr auto COUNCIL_1 = SUN7_AFTER_EASTER ; ///< Неделя 7-я по Пасхе. Святых отцов Первого Вселенского Собора
+constexpr auto ENDOF_ASCENSION = WEEK7_AFTER_EASTER_FRI ; ///< Пятница 7-й седмицы по Пасхе. Отдание праздника Вознесения Господня
+constexpr auto TRINITY_SAT = WEEK7_AFTER_EASTER_SAT ; ///< Суббота 7-й седмицы по Пасхе. Троицкая родительская суббота
+constexpr auto PENTECOST = PENTECOST_SUN ; ///< Неделя 8-я по Пасхе. День Святой Тро́ицы. Пятидеся́тница
+constexpr auto TRINITY_SUN = PENTECOST_SUN ; ///< Неделя 8-я по Пасхе. День Святой Тро́ицы. Пятидеся́тница
+constexpr auto HOLY_SPIRIT_DAY = PENTECOST_MON ; ///< Понедельник Пятидесятницы. День Святаго Духа
+constexpr auto ENDOF_PENTECOST = PENTECOST_SAT ; ///< Суббота Пятидесятницы. Отдание праздника Пятидесятницы
+constexpr auto ALL_SAINTS = SUN1_AFTER_PENTECOST ; ///< Неделя 1-я по Пятидесятнице, Всех святых
+constexpr auto ALL_RUS_SAINTS = SUN2_AFTER_PENTECOST ; ///< Неделя 2-я по Пятидесятнице. Всех святых, в земле Русской просиявших
+constexpr auto JUDG_SUN = DREAD_JUDGEMENT_SUN ; ///< Неделя мясопу́стная, о Страшном Суде
+constexpr auto FORGIVENESS_SUN = CHEESE_SUN ; ///< Неделя сыропустная. Воспоминание Адамова изгнания. Прощеное воскресенье
+constexpr auto FORGIVENESS = CHEESE_SUN ; ///< Неделя сыропустная. Воспоминание Адамова изгнания. Прощеное воскресенье
+constexpr auto LENT_BEGIN = LENT_WEEK1_MON ; ///< Понедельник 1-й седмицы. Начало Великого поста
+constexpr auto LENT_MON1 = LENT_WEEK1_MON ; ///< Понедельник 1-й седмицы. Начало Великого поста
+constexpr auto LENT_TUE1 = LENT_WEEK1_TUE ; ///< Вторник 1-й седмицы великого поста
+constexpr auto LENT_WED1 = LENT_WEEK1_WED ; ///< Среда 1-й седмицы великого поста
+constexpr auto LENT_THU1 = LENT_WEEK1_THU ; ///< Четверг 1-й седмицы великого поста
+constexpr auto LENT_FRI1 = LENT_WEEK1_FRI ; ///< Пятница 1-й седмицы великого поста
+constexpr auto LENT_SAT1 = LENT_WEEK1_SAT ; ///< Суббота 1-й седмицы великого поста. Вмч. Феодора Тирона
+constexpr auto THEODOR_SAT = LENT_WEEK1_SAT ; ///< Суббота 1-й седмицы великого поста. Вмч. Феодора Тирона
+constexpr auto FEODOR_SAT = LENT_WEEK1_SAT ; ///< Суббота 1-й седмицы великого поста. Вмч. Феодора Тирона
+constexpr auto ORTHODOXY_TRIUMPH = LENT_SUN1 ; ///< Неделя 1-я Великого поста. Торжество Православия
+constexpr auto GREGORY_PALAMA = LENT_SUN2 ; ///< Неделя 2-я Великого поста. Свт. Григория Паламы, архиеп. Фессалонитского
+constexpr auto CROSS_WORSHIP = LENT_SUN3 ; ///< Неделя 3-я Великого поста, Крестопоклонная
+constexpr auto IOAN_LADDER = LENT_SUN4 ; ///< Неделя 4-я Великого поста. Прп. Иоанна Лествичника
+constexpr auto IOANN_LADDER = LENT_SUN4 ; ///< Неделя 4-я Великого поста. Прп. Иоанна Лествичника
+constexpr auto AKAFIST_SAT = LENT_WEEK5_SAT ; ///< Суббота 5-й седмицы великого поста. Суббота Ака́фиста. Похвала́ Пресвятой Богородицы
+constexpr auto AKATHIST_SAT = LENT_WEEK5_SAT ; ///< Суббота 5-й седмицы великого поста. Суббота Ака́фиста. Похвала́ Пресвятой Богородицы
+constexpr auto THEOTOKOS_LAUDATION = LENT_WEEK5_SAT ; ///< Суббота 5-й седмицы великого поста. Суббота Ака́фиста. Похвала́ Пресвятой Богородицы
+constexpr auto MARY_OF_EGYPT = LENT_SUN5 ; ///< Неделя 5-я Великого поста. Прп. Марии Египетской
+constexpr auto PALM_MON = LENT_WEEK6_MON ; ///< Понедельник 6-й седмицы великого поста, ва́ий
+constexpr auto PALM_TUE = LENT_WEEK6_TUE ; ///< Вторник 6-й седмицы великого поста, ва́ий
+constexpr auto PALM_WED = LENT_WEEK6_WED ; ///< Среда 6-й седмицы великого поста, ва́ий
+constexpr auto PALM_THU = LENT_WEEK6_THU ; ///< Четверг 6-й седмицы великого поста, ва́ий
+constexpr auto PALM_FRI = LENT_WEEK6_FRI ; ///< Пятница 6-й седмицы великого поста, ва́ий
+constexpr auto LAZAR_SAT = LENT_WEEK6_SAT ; ///< Суббота 6-й седмицы великого поста, ва́ий. Лазарева суббота
+constexpr auto LAZARUS_SAT = LENT_WEEK6_SAT ; ///< Суббота 6-й седмицы великого поста, ва́ий. Лазарева суббота
+constexpr auto PALM_SAT = LENT_WEEK6_SAT ; ///< Суббота 6-й седмицы великого поста, ва́ий. Лазарева суббота
+constexpr auto PALM_SUN = LENT_SUN6 ; ///< Неделя ва́ий (цветоно́сная, Вербное воскресенье). Вход Господень в Иерусалим
+constexpr auto JERUSALEM_ENTRANCE = LENT_SUN6 ; ///< Неделя ва́ий (цветоно́сная, Вербное воскресенье). Вход Господень в Иерусалим
+constexpr auto GREAT_MON = LENT_WEEK7_MON ; ///< Страстна́я седмица. Великий Понедельник
+constexpr auto GREAT_TUE = LENT_WEEK7_TUE ; ///< Страстна́я седмица. Великий Вторник
+constexpr auto GREAT_WED = LENT_WEEK7_WED ; ///< Страстна́я седмица. Великая Среда
+constexpr auto GREAT_THU = LENT_WEEK7_THU ; ///< Страстна́я седмица. Великий Четверг. Воспоминание Тайной Ве́чери
+constexpr auto GREAT_FRI = LENT_WEEK7_FRI ; ///< Страстна́я седмица. Великая Пятница
+constexpr auto GREAT_SAT = LENT_WEEK7_SAT ; ///< Страстна́я седмица. Великая Суббота
+constexpr auto LENT_END = LENT_WEEK7_SAT ; ///< Страстна́я седмица. Великая Суббота
+constexpr auto COUNCIL_7 = FATHERS_ECU_COUNCIL_7 ; ///< Память святых отцов VII Вселенского Собора
+constexpr auto SAT_BEFORE_THEOPHANY = SAT_BEFORE_BAPTISM ; ///< Суббота перед Богоявлением
+constexpr auto SUN_BEFORE_THEOPHANY = SUN_BEFORE_BAPTISM ; ///< Неделя перед Богоявлением
+constexpr auto SUN_BEFORE_THEOPHANY_READINGS = SUN_BEFORE_BAPTISM_READINGS ; ///< Чтения недели пред Богоявлением
+constexpr auto SAT_AFTER_THEOPHANY = SAT_AFTER_BAPTISM ; ///< Суббота по Богоявлении
+constexpr auto SUN_AFTER_THEOPHANY = SUN_AFTER_BAPTISM ; ///< Неделя по Богоявлении
+constexpr auto RUS_MARTYRS = NEW_MARTYRS_OF_RUSSIA ; ///< Собор новомучеников и исповедников Церкви Русской
+constexpr auto HIERARCHS_3 = CONVENTION_OF_3_HIERARCHS ; ///< Собор 3-x свят. Василия Великого, Григория Богослова и Иоанна Златоустого
+constexpr auto IOAN_HEAD_FINDING_12 = JOHN_BAPTIST_HEAD_DISCOVERY_1_2 ; ///< Первое и второе Обре́тение главы Иоанна Предтечи
+constexpr auto IOANN_HEAD_FINDING_12 = JOHN_BAPTIST_HEAD_DISCOVERY_1_2 ; ///< Первое и второе Обре́тение главы Иоанна Предтечи
+constexpr auto IOAN_HEAD_FINDING_3 = JOHN_BAPTIST_HEAD_DISCOVERY_3 ; ///< Третье обре́тение главы Предтечи и Крестителя Господня Иоанна
+constexpr auto IOANN_HEAD_FINDING_3 = JOHN_BAPTIST_HEAD_DISCOVERY_3 ; ///< Третье обре́тение главы Предтечи и Крестителя Господня Иоанна
+constexpr auto MARTYRS_40_SEBASTE = HOLY_FORTY_MARTYRS_OF_SEBASTE ; ///< Святых сорока́ мучеников, в Севастийском е́зере мучившихся
+constexpr auto MARTYRS_40 = HOLY_FORTY_MARTYRS_OF_SEBASTE ; ///< Святых сорока́ мучеников, в Севастийском е́зере мучившихся
+constexpr auto FOREFEAST_ANNUNCIATION = FOREFEAST_GOD_MOTHER_ANNUNCIATION ; ///< Предпразднство Благовещения Пресвятой Богородицы
+constexpr auto ENDOF_ANNUNCIATION = ENDOF_GOD_MOTHER_ANNUNCIATION ; ///< Отдание праздника Благовещения Пресвятой Богородицы
+constexpr auto MARTYR_GEORG = HOLY_GREAT_MARTYR_GEORGE ; ///< Вмч. Гео́ргия Победоно́сца
+constexpr auto COUNCIL_1_6 = FATHERS_ECU_COUNCIL_1_6 ; ///< Память святых отцов шести Вселенских Соборов
+constexpr auto MOVE_FEAST = MOVEABLE_FEAST ; ///< Двунадесятый переходящий праздник
+constexpr auto IMMOVE_FEAST = IMMOVEABLE_FEAST ; ///< Двунадесятый непереходящий праздник
+constexpr auto MARIAN_ICON_DEKTOURSKAYA = MARIAN_ICON_DOKTOURSKAYA ; ///< иконы Божией Матери «Дектоурская (Доктоурская)»
+constexpr auto MARIAN_ICON_DELIVERANCEFROMAFFLICTIONS = MARIAN_ICON_IZBAVLENIEOTBED ; ///< иконы Божией Матери «Избавление От Бед Страждущих»
+constexpr auto MARIAN_ICON_MEZHIRICHSKAYA = MARIAN_ICON_ZHIZNEPODATELNITSA ; ///< иконы Божией Матери «Межеричская (Жизнеподательница)»
+
 // функции
 MonthDay easter_date(int year_number_in_fullindiction) ;
 MonthDay find_date(int year_number_in_fullindiction, DayProperty property) ;
