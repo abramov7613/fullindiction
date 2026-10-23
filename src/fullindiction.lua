@@ -1925,6 +1925,233 @@ CREATE_DAYS_ENTRY {
   calc = function(year) return GET_DATEOBJ(year, 'SVT_ARSENIY_TVER'):md() end
 }
 
+CREATE_DAYS_ENTRY {
+  desc = "Прмчч. Неофита, Ионы, Неофита, Ионы и Парфения Липсийских",
+  keys = { 'PREP_MUCH_LIPS' },
+  calc = function(year) return Date:new(year,6,27):itowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор Валаамских святых",
+  keys = { 'SOBOR_VALAAM' },
+  calc = function(year) return Date:new(year,8,7):itowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор всех Бессребреников",
+  keys = { 'SOBOR_BESSREBR' },
+  calc = function(year)
+    local result = Date:new(year,11,1)
+    local i = result:wd()
+    if i==1 or i==2 or i==3 then result:d(i)
+    elseif i==4 or i==5 or i==6 then result:i(7-i) end
+    return result:md()
+  end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор Тверских святых",
+  keys = { 'SOBOR_TVER' },
+  calc = function(year) return GET_DATEOBJ(year, 'SVT_ARSENIY_TVER'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор Кузбасских святых",
+  keys = { 'SOBOR_KUZBAS' },
+  calc = function(year) return Date:new(year,8,31):dtowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Преподобномучеников отцов Давидо-Гареджийских (Груз.)",
+  keys = { 'SOBOR_DAVID_GARED' },
+  calc = function(year) return GET_DATEOBJ(year, 'BRIGHT_TUE'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор Алтайских святых",
+  keys = { 'SOBOR_ALTAY' },
+  calc = function(year) return Date:new(year,9,7):itowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор всех преподобных и Богоносных отцов, во Святой Горе Афонской просиявших",
+  keys = { 'SOBOR_PREP_AFON' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN2_AFTER_PENTECOST'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор Белорусских святых",
+  keys = { 'SOBOR_BELRUS' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN3_AFTER_PENTECOST'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор Вологодских святых",
+  keys = { 'SOBOR_VOLOGD' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN3_AFTER_PENTECOST'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор Новгородских святых",
+  keys = { 'SOBOR_NOVGOROD' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN3_AFTER_PENTECOST'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор Псковских святых",
+  keys = { 'SOBOR_PSKOV' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN3_AFTER_PENTECOST'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор святых Санкт-Петербургской митрополии",
+  keys = { 'SOBOR_PITER' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN3_AFTER_PENTECOST'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор святых Удмуртской земли",
+  keys = { 'SOBOR_UDMURT' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN3_AFTER_PENTECOST'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор всех святых, в земле Волгоградской просиявших",
+  keys = { 'SOBOR_VOLGOGRAD' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN3_AFTER_PENTECOST'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор святых, в земле Испанской и Португальской просиявших",
+  keys = { 'SOBOR_SPAIN' },
+  calc = function(year) return Date:new(year,9,28):dtowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор святых Кубанской митрополии",
+  keys = { 'SOBOR_KUBAN' },
+  calc = function(year) return Date:new(year,9,16):itowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор святых Челябинской митрополии",
+  keys = { 'SOBOR_CHELYABINSK' },
+  calc = function(year)
+    local result = Date:new(year,9,27):itowd(0)
+    local pokrov = Date:new(year,10,1)
+    if result==pokrov then result:d():dtowd(0) end
+    return result:md()
+  end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор Московских святых",
+  keys = { 'SOBOR_MOSCOW' },
+  calc = function(year) return Date:new(year,8,25):dtowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор святых Нижегородской митрополии",
+  keys = { 'SOBOR_NIJEGORODSK' },
+  calc = function(year) return Date:new(year,8,26):itowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор Саратовских святых",
+  keys = { 'SOBOR_SARATOV' },
+  calc = function(year)
+    local result = Date:new(year,8,31)
+    local i = result:wd()
+    if i==1 or i==2 or i==3 then result:d(i)
+    elseif i==4 or i==5 or i==6 then result:i(7-i) end
+    return result:md()
+  end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор новомучеников, в Бутове пострадавших",
+  keys = { 'SOBOR_BUTOV' },
+  calc = function(year) return GET_DATEOBJ(year, 'WEEK4_AFTER_EASTER_SAT'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор новомучеников и исповедников Казахстанских",
+  keys = { 'SOBOR_KAZAHSTAN' },
+  calc = function(year) return Date:new(year,9,3):itowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор новомучеников и исповедников земли Карельской",
+  keys = { 'SOBOR_KAREL' },
+  calc = function(year) return Date:new(year,10,18):itowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор святых Пермской митрополии",
+  keys = { 'SOBOR_PERM' },
+  calc = function(year) return Date:new(year,1,29):itowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор преподобных отцов Псково-Печерских",
+  keys = { 'SOBOR_PREP_PSKOVOPECH' },
+  calc = function(year) return GET_DATEOBJ(year, 'SUN4_AFTER_PENTECOST'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор преподобных отцов, на Богошественной Горе Синай подвизавшихся",
+  keys = { 'SOBOR_PREP_SINAY' },
+  calc = function(year) return GET_DATEOBJ(year, 'BRIGHT_WED'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор мучеников Холмских и Подляшских",
+  keys = { 'SOBOR_MUCH_HOLMSK' },
+  calc = function(year) return Date:new(year,5,19):itowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор всех преподобных отцов, в подвиге просиявших",
+  keys = { 'SOBOR_ALL_PREP' },
+  calc = function(year) return GET_DATEOBJ(year, 'CHEESE_SAT'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор всех преподобных отцов Киево-Печерских",
+  keys = { 'SOBOR_PREP_KIEVOPECH' },
+  calc = function(year) return GET_DATEOBJ(year, 'LENT_SUN2'):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор Смоленских святых",
+  keys = { 'SOBOR_SMOLENSK' },
+  calc = function(year) return Date:new(year,7,27):dtowd(0):md() end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор Аланских святых",
+  keys = { 'SOBOR_ALAN' },
+  calc = function(year)
+    local result = Date:new(year,11,10)
+    local i = result:wd()
+    if i==1 or i==2 or i==3 then result:d(i)
+    elseif i==4 or i==5 or i==6 then result:i(7-i) end
+    return result:md()
+  end
+}
+
+CREATE_DAYS_ENTRY {
+  desc = "Собор святых, в земле Германской просиявших",
+  keys = { 'SOBOR_GERMAN' },
+  calc = function(year)
+    local result = Date:new(year,9,20)
+    local i = result:wd()
+    if i==1 or i==2 or i==3 then result:d(i)
+    elseif i==4 or i==5 or i==6 then result:i(7-i) end
+    return result:md()
+  end
+}
+
 --#######################################################################--
 --##############   return table for user API   ##########################--
 --#######################################################################--
