@@ -85,7 +85,8 @@ enum class DayProperty {
     temp_table[v.desc] = k
     DAY_PROPERTIES[#DAY_PROPERTIES+1] = k
   end
-  h_file:write('  DAY_PROPERTY_SIZE\n};\n')
+  h_file:write('  DAY_PROPERTY_SIZE\n}; using enum DayProperty;\n')
+  h_file:write('// таблица псевдонимов\n')
   local iterator_by_not_firstkeys_of_days_table = function()
     local t = {}
     for n in iterator_by_firstkeys_of_days_table() do t[n] = true end
@@ -100,8 +101,6 @@ enum class DayProperty {
       return a[i], fi.days[a[i]]
     end
   end
-  h_file:write('using enum DayProperty ;\n')
-  h_file:write('// таблица псевдонимов\n')
   for k,v in iterator_by_not_firstkeys_of_days_table() do
     h_file:write('constexpr auto ', k, ' = ', temp_table[v.desc], ' ; ///< ', v.desc, '\n')
   end
@@ -148,10 +147,18 @@ do
 #include <algorithm>
 #include <iterator>
 #include <unordered_map>
+#include <type_traits>
 
 namespace {
 
 using namespace fullindiction ;
+
+constexpr auto DAY_PROPERTY_SIZE_AS_INT = static_cast<int>(DayProperty::DAY_PROPERTY_SIZE) ;
+
+using DayPropertyEqualUnsignedIntegerType =
+    std::conditional<DAY_PROPERTY_SIZE_AS_INT < 256, std::uint8_t, std::uint16_t>::type;
+
+using ui_property = DayPropertyEqualUnsignedIntegerType ;
 
 constexpr void check_year_number(const int year_number_in_fullindiction)
 {
@@ -162,7 +169,7 @@ constexpr void check_year_number(const int year_number_in_fullindiction)
 constexpr void check_property_number(DayProperty p)
 {
   auto pnum = static_cast<int>(p);
-  auto max = static_cast<int>(DayProperty::DAY_PROPERTY_SIZE) - 1;
+  auto max = DAY_PROPERTY_SIZE_AS_INT - 1;
   if (pnum < 0 || pnum > max)
     throw std::runtime_error("fullindiction: invalid DayProperty value");
 }
@@ -229,17 +236,19 @@ constexpr void check_date(const int year_number_in_fullindiction, const MonthDay
     return result
   end
   local oct_str = {}
+  local SizeOfDayProperty = 1
+  if #DAY_PROPERTIES > 255 then SizeOfDayProperty = 2 end
   for p = 1, #DAY_PROPERTIES do -- save all calculations to bytes sequence
     for y = 1, fi.INDICTION_LENGTH do
       oct_str[#oct_str + 1] = '  "'
-      oct_str[#oct_str + 1] = to_octets(p-1, 2)       -- 2 bytes for DayProperty value as int
-      oct_str[#oct_str + 1] = to_octets(y, 2)         -- 2 bytes for year number in indiction range
+      oct_str[#oct_str + 1] = to_octets(p-1, SizeOfDayProperty) -- 1 or 2 bytes for DayProperty value as int
+      oct_str[#oct_str + 1] = to_octets(y, 2)                   -- 2 bytes for year number in indiction range
       local dates = { fi.days[DAY_PROPERTIES[p]].calc(y) }
       if dates[1]==0 then dates = {} end
-      oct_str[#oct_str + 1] = to_octets(#dates//2)    -- 1 byte for count of dates
+      oct_str[#oct_str + 1] = to_octets(#dates//2)              -- 1 byte for count of dates
       for i=1, #dates, 2 do
-        oct_str[#oct_str + 1] = to_octets(dates[i])   -- 1 byte for month number of each date
-        oct_str[#oct_str + 1] = to_octets(dates[i+1]) -- 1 byte for day number of each date
+        oct_str[#oct_str + 1] = to_octets(dates[i])             -- 1 byte for month number of each date
+        oct_str[#oct_str + 1] = to_octets(dates[i+1])           -- 1 byte for day number of each date
       end
       oct_str[#oct_str + 1] = '"\n'
     end
@@ -260,10 +269,12 @@ public:
     auto pend = ptr + data_.size() ;
     while (ptr < pend) {
       uint8_t x = *ptr++;
-      uint16_t property = x;
-      property <<= 8 ;
-      x = *ptr++;
-      property |= x;
+      ui_property property = x;
+      if constexpr (sizeof(ui_property) > 1) {
+        property <<= 8 ;
+        x = *ptr++;
+        property |= x;
+      }
       x = *ptr++;
       uint16_t year = x;
       year <<= 8 ;
@@ -310,12 +321,12 @@ public:
       local month = tonumber(key:sub(4,5))
       local day = tonumber(key:sub(6,7))
       oct_str[#oct_str + 1] = '  "'
-      oct_str[#oct_str + 1] = to_octets(year, 2)  -- 2 bytes for year
-      oct_str[#oct_str + 1] = to_octets(month)    -- 1 byte for month
-      oct_str[#oct_str + 1] = to_octets(day)      -- 1 byte for day
-      oct_str[#oct_str + 1] = to_octets(#val)     -- 1 byte for properties count
+      oct_str[#oct_str + 1] = to_octets(year, 2)                  -- 2 bytes for year
+      oct_str[#oct_str + 1] = to_octets(month)                    -- 1 byte for month
+      oct_str[#oct_str + 1] = to_octets(day)                      -- 1 byte for day
+      oct_str[#oct_str + 1] = to_octets(#val)                     -- 1 byte for properties count
       for i,v in ipairs(val) do
-        oct_str[#oct_str + 1] = to_octets(v-1, 2) -- 2 bytes for property as integer
+        oct_str[#oct_str + 1] = to_octets(v-1, SizeOfDayProperty) -- 1 or 2 bytes for property as integer
       end
       oct_str[#oct_str + 1] = '"\n'
     end
@@ -327,7 +338,7 @@ class ARRAY_OF_PROPERTIES_BY_YMD {
   buf = table.concat(oct_str)
   cpp_file:write(buf, '  , ', select(2, string.gsub(buf, '\\', '\\')), ');\n')
   cpp_file:write([[
-  std::vector<uint16_t> arr_ [532][12][31];
+  std::vector<ui_property> arr_ [532][12][31];
 public:
   ARRAY_OF_PROPERTIES_BY_YMD()
   {
@@ -346,11 +357,13 @@ public:
       vec.reserve(count);
       while (count>0) {
         x = *ptr++;
-        uint16_t val = x;
-        val <<= 8 ;
-        x = *ptr++;
-        val |= x;
-        vec.push_back(val);
+        ui_property property = x;
+        if constexpr (sizeof(ui_property) > 1) {
+          property <<= 8 ;
+          x = *ptr++;
+          property |= x;
+        }
+        vec.push_back(property);
         count--;
       }
     }
